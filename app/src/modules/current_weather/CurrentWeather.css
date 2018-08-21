@@ -1,0 +1,14 @@
+.current-weather {
+  font-weight: 300;
+}
+
+.current-weather__desc {
+  display: block;
+}
+
+.current-weather__temp {
+  display: inline-block;
+  vertical-align: top;
+  font-size: 2em;
+  margin: 12px 0;
+}

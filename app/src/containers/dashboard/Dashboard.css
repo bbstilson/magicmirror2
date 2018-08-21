@@ -1,0 +1,17 @@
+.dashboard {
+  height: 100%;
+}
+
+.navigation-icon__container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 10px;
+  z-index: 1;
+}
+
+.navigation-icon__icon {
+  height: 30px;
+  width: 30px;
+  margin: 0 10px;
+}

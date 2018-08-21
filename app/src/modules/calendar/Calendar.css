@@ -1,0 +1,23 @@
+.calendar {
+  text-align: center;
+  border-collapse: collapse;
+  font-size: 0.8em;
+}
+
+.calendar__month {
+  font-size: 1.3em;
+  font-weight: lighter;
+}
+
+.calendar__header {
+  border-bottom: 1px dashed white;
+}
+
+.calendar__cell {
+  padding: 7px;
+  border-radius: 5px;
+}
+
+.calendar__cell.active {
+  background-color: hsl(0, 0%, 80%);
+}

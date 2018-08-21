@@ -1,0 +1,8 @@
+.weather-forecast {
+  font-weight: 300;
+  text-align: left;
+}
+
+.weather-forecast__data {
+  padding: 0 10px;
+}

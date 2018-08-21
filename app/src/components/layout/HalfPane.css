@@ -1,0 +1,11 @@
+.halfpane {
+  height: 100%;
+  width: 50%;
+  background: hsla(0, 0%, 95%, 1);
+  padding: 2.5%;
+  overflow-y: auto;
+}
+
+.halfpane--border {
+  border-right: 1px solid lightgray;
+}
