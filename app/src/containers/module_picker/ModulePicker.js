@@ -1,4 +1,4 @@
-// import Module from 'components/ModulePicker/Module';
+// import Module from '../../components/ModulePicker/Module';
 import { addModule, removeModule } from '../../redux/modules/modules.js';
 
 import ModuleModel from '../../models/Module.js';
