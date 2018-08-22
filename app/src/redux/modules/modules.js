@@ -4,7 +4,7 @@ import Module from '../../models/Module.js';
 import * as Immutable from 'immutable';
 
 import type { ModulePosition } from '../../models/Module.js';
-import type { List, Set } from 'immutable';
+import type { List, Map } from 'immutable';
 
 /**
  * CONSTANTS
@@ -79,36 +79,38 @@ function updatePosition(action: UpdateModulePosition): any {
 
 
 const INITIAL_STATE = {
-  activeModules: Immutable.Set(),
+  active: Immutable.Map(),
   available: Immutable.List(modules),
 };
 
-type InitialState = {
-  activeModules: Set<Module>,
+type State = {
+  active: Map<string, Module>,
   available: List<Module>,
 }
 
 export default (
-  state: InitialState = INITIAL_STATE,
+  state: State = INITIAL_STATE,
   action: Action,
 ) => {
+  const { active } = state;
+
   switch(action.type) {
     case ADD_MODULE:
       return {
         ...state,
-        activeModules: state.activeModules.add(action.module)
+        active: active.set(action.module.name, action.module)
       };
     case REMOVE_MODULE:
       return {
         ...state,
-        activeModules: state.activeModules.delete(action.module)
+        active: active.delete(action.module.name)
       };
     case UPDATE_MODULE_POSITION:
       // This makes flow happy for some reason...
-      const newActiveModules: Set<Module> = state.activeModules.map(updatePosition(action));
+      const newActive: Map<string, Module> = active.map(updatePosition(action));
       return {
         ...state,
-        activeModules: newActiveModules
+        active: newActive
       };
     default:
       return state;
