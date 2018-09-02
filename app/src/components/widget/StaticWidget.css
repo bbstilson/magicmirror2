@@ -1,0 +1,7 @@
+.static-widget {
+  position: absolute;
+}
+
+.static-widget--bordered {
+  border: 1px solid white;
+}

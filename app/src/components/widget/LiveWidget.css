@@ -1,0 +1,7 @@
+.live-widget__container {
+  color: lightgray;
+  border: 1px dashed;
+  position: absolute;
+  cursor: move;
+  background: hsla(0, 0%, 10%, 1);
+}

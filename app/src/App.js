@@ -1,4 +1,4 @@
-import { Dashboard, Mirror } from './containers/index.js'
+import { Dashboard, StaticMirror } from './containers/index.js'
 
 import createStore from './redux/create.js';
 
@@ -16,7 +16,7 @@ export default class App extends Component<Props> {
       <Provider store={createStore()}>
         <Router>
           <div className="full">
-            <Route exact path="/" component={Mirror} />
+            <Route exact path="/" component={StaticMirror} />
             <Route path="/dashboard" component={Dashboard} />
           </div>
         </Router>

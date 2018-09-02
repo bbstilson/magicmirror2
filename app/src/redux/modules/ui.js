@@ -2,26 +2,26 @@
  * CONSTANTS
  */
 
-const TOGGLE_MODULE_INFO = 'TOGGLE_MODULE_INFO';
+const TOGGLE_WIDGET_INFO = 'TOGGLE_WIDGET_INFO';
 
 /**
  * TYPES
  */
 
-type ToggleModuleInfo = {
-  type: 'TOGGLE_MODULE_INFO',
+type ToggleWidgetInfo = {
+  type: 'TOGGLE_WIDGET_INFO',
 }
 
 type Action =
-  ToggleModuleInfo
+  ToggleWidgetInfo
 
 /**
  * ACTIONS
  */
 
-export function toggleModuleInfo(): ToggleModuleInfo {
+export function toggleWidgetInfo(): ToggleWidgetInfo {
   return {
-    type: TOGGLE_MODULE_INFO
+    type: TOGGLE_WIDGET_INFO
   };
 }
 
@@ -42,7 +42,7 @@ export default (
   action: Action
 ) => {
   switch(action.type) {
-    case (TOGGLE_MODULE_INFO): {
+    case (TOGGLE_WIDGET_INFO): {
       return {
         ...state,
         expanded: !state.expanded

@@ -1,10 +1,4 @@
-type AxiosResponse = {
-  status: number,
-  statusText: string,
-  data: Object
-}
-
-function checkStatus (res: AxiosResponse) {
+function checkStatus (res) {
   if (res.status >= 200 && res.status <= 300) {
     return res;
   } else {

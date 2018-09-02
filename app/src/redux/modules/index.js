@@ -1,6 +1,6 @@
-import modules from './modules.js';
+import widgets from './widgets.js';
 import ui from './ui.js';
 
 import { combineReducers } from 'redux';
 
-export default combineReducers({ modules, ui });
+export default combineReducers({ widgets, ui });

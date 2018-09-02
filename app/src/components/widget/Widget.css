@@ -1,0 +1,13 @@
+.widget__container {
+  padding: 10px 20px;
+  border-bottom: 1px solid lightgray;
+}
+
+.widget__container:last-of-type {
+  border-bottom: none;
+}
+
+
+.widget__description {
+  padding: 20px 0;
+}

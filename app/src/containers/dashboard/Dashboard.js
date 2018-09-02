@@ -1,7 +1,8 @@
 import HalfPane from '../../components/layout/HalfPane.js';
-import ModulePicker from '../module_picker/ModulePicker.js';
+import { DraggableMirror } from '../magic_mirror/index.js';
+import WidgetPicker from '../widget_picker/WidgetPicker.js';
 
-import { toggleModuleInfo } from '../../redux/modules/ui.js';
+import { toggleWidgetInfo } from '../../redux/modules/ui.js';
 
 import magicmirrorIcon from '../../assets/magicmirror.png';
 import infoIcon from '../../assets/information.png';
@@ -11,11 +12,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as React from 'react';
 
-type Props = {
-  toggleModuleInfo: boolean,
-}
+type Props = {|
+  toggleWidgetInfo: boolean,
+|};
 
-const Dashboard = ({ toggleModuleInfo }: Props) => (
+const Dashboard = ({ toggleWidgetInfo }: Props) => (
   <div className="dashboard flex--row--center">
     <div className="navigation-icon__container">
       <Link to="/">
@@ -27,17 +28,16 @@ const Dashboard = ({ toggleModuleInfo }: Props) => (
       <img
         className="navigation-icon__icon"
         src={infoIcon}
-        alt="Display module information."
-        onClick={toggleModuleInfo} />
+        alt="Display widget information."
+        onClick={toggleWidgetInfo} />
     </div>
     <HalfPane border>
-      <ModulePicker />
+      <WidgetPicker />
     </HalfPane>
     <HalfPane>
-      hello
-      {/*<LiveView />*/}
+      <DraggableMirror />
     </HalfPane>
   </div>
 );
 
-export default connect(() => ({}), { toggleModuleInfo })(Dashboard);
+export default connect(() => ({}), { toggleWidgetInfo })(Dashboard);
