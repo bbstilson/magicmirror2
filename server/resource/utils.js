@@ -1,3 +1,5 @@
+const http = require('http');
+
 const DEBUG = process.env.DEBUG || false;
 
 function checkStatus (res) {
@@ -15,6 +17,21 @@ function checkStatus (res) {
   }
 }
 
+function endWithStatus(status, res) {
+  res.status(status).end(http.STATUS_CODES[status]);
+}
+
+const isUndefined = (t) => typeof t === 'undefined';
+
+function mkJsonError(res, status = 500) {
+  return (error) => {
+    res.status(status).json({ error, status });
+  };
+}
+
 module.exports = {
-  checkStatus: checkStatus
+  checkStatus: checkStatus,
+  endWithStatus: endWithStatus,
+  isUndefined: isUndefined,
+  mkJsonError: mkJsonError,
 }

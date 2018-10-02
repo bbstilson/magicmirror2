@@ -24,7 +24,10 @@ module.exports = function WeatherResource(router) {
             response.json(data.daily);
             break;
           default:
-            response.json({ status: 500, statusText: "Could not find the proper data to send." })
+            response.json({
+              status: 500,
+              statusText: 'Could not find the proper data to send.'
+            });
         }
       })
       .catch(error => {
