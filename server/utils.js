@@ -1,12 +1,11 @@
-function checkStatus (res) {
-  if (res.status >= 200 && res.status <= 300) {
-    return res;
-  } else {
-    const error = new Error(res.statusText);
-    throw error;
-  }
+function setupCors(app) {
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 }
 
 module.exports = {
-  checkStatus: checkStatus
+  setupCors: setupCors
 }

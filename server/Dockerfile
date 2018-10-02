@@ -1,13 +1,15 @@
-FROM node:10
+FROM node:10.9-alpine
 
 WORKDIR /usr/src/app
 
-COPY package*.json ./
-
-RUN npm install
+COPY package.json yarn.lock ./
 
 COPY . .
 
-EXPOSE 8080
+RUN npm install -g -s --no-progress yarn && \
+  yarn && \
+  yarn cache clean
 
-CMD [ "npm", "start" ]
+CMD [ "yarn", "start" ]
+
+EXPOSE 8080

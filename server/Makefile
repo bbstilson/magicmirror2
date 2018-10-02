@@ -10,8 +10,8 @@ prune:
 run:
 	docker run --rm -p 4000:4000 \
 	--name=api-server \
-	-e NEWS_API_KEY=7604c1d725c34cecab73476858d4b74c \
-	-e WEATHER_API_KEY=89032186851c0ae0b2c94f9f4d605deb \
+	-e NEWS_API_KEY=31c9319a6ce94907b393408a14f91952 \
+	-e WEATHER_API_KEY=ca6a5cfecf5142839769c75e4d72bbe2 \
 	api-server
 
 start: build run
