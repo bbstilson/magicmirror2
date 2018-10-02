@@ -5,13 +5,30 @@ const TABLE_NAME = 'widget_positions';
 module.exports = (sequelize, DataTypes) => {
   const WidgetPositions = sequelize.define(TABLE_NAME, {
     widgetName: {
+      primaryKey: true,
       type: DataTypes.TEXT,
       field: 'widget_name',
     },
-    top: DataTypes.INTEGER,
-    left: DataTypes.INTEGER,
+    top: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    left: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    createdAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      field: 'created_at',
+    },
+    updatedAt: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      field: 'updated_at',
+    },
   }, {
-    // this isn't working D:
+    // this isn't working ..D:
     indexes: [{
       name: `${TABLE_NAME}_widget_name`,
       fields: ['widget_name'],

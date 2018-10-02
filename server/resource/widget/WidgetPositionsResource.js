@@ -1,19 +1,18 @@
 const widgetPositionService = require('../../service/widget/WidgetPositionsService.js');
 
-const utils = require('../utils.js');
-const checkStatus = utils.checkStatus;
+const GetWidgetPositions = require('./GetWidgetPositions.js');
+const UpdateWidgetPosition = require('./UpdateWidgetPosition.js');
+const DeleteWidgetPosition = require('./DeleteWidgetPosition.js');
+const CreateWidgetPosition = require('./CreateWidgetPosition.js');
+
+const ENDPOINT = '/widgets';
 
 module.exports = function WidgetPositionResource(router) {
-  router.get('/widgets', (req, res) => {
-    widgetPositionService.getAllWidgetPositions()
-      .then((data) => {
-        console.log(data);
-        res.json({ hey: 'hi' });
-      })
-      .catch((error) => {
-        res.json({
-          error: error
-        });
-      })
-  });
+  router.get(ENDPOINT, GetWidgetPositions);
+
+  router.put(ENDPOINT, UpdateWidgetPosition);
+
+  router.post(ENDPOINT, CreateWidgetPosition);
+
+  router.delete(`${ENDPOINT}/:widgetName`, DeleteWidgetPosition);
 }
