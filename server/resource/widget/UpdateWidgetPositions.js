@@ -4,13 +4,16 @@ const widgetPositionService = require('../../service/widget/WidgetPositionsServi
 
 const http = require('http');
 
-module.exports = function updateWidgetPosition(req, res) {
-  if (!isValidUpdateCreateRequest(req)) {
+module.exports = function updateWidgetPositions(req, res) {
+  if (
+    !Array.isArray(req.body) ||
+    !req.body.every(w => isValidUpdateCreateRequest(w))
+  ) {
     utils.endWithStatus(400, res);
     return;
   }
 
-  widgetPositionService.updateWidgetPosition(req.body)
+  widgetPositionService.updateWidgetPositions(req.body)
     .then((data) => {
       utils.endWithStatus(200, res);
     })

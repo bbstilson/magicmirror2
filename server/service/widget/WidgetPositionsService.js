@@ -5,8 +5,8 @@ module.exports = {
     return widgetPositionsDao.getAllWidgetPositions();
   },
 
-  updateWidgetPosition: function updateWidgetPosition({ widgetName, top, left }) {
-    return widgetPositionsDao.updateWidgetPosition({ widgetName, top, left });
+  updateWidgetPositions: function updateWidgetPositions(widgets) {
+    return Promise.all(widgets.map(widgetPositionsDao.updateWidgetPosition));
   },
 
   createWidgetPosition: function createWidgetPosition({ widgetName, top, left }) {

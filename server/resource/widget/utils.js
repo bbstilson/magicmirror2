@@ -1,7 +1,7 @@
 const isUndefined = require('../utils.js').isUndefined;
 
 function isValidUpdateCreateRequest(req) {
-  const { widgetName, top, left } = req.body;
+  const { widgetName, top, left } = req;
 
   if (
     isUndefined(widgetName) ||

@@ -22,4 +22,3 @@ module.exports = {
       .then((widget) => widget ? widget.destroy() : Promise.reject(0));
   },
 }
-

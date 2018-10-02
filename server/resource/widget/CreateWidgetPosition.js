@@ -5,7 +5,7 @@ const widgetPositionService = require('../../service/widget/WidgetPositionsServi
 const http = require('http');
 
 module.exports = function createWidgetPosition(req, res) {
-  if (!isValidUpdateCreateRequest(req)) {
+  if (!isValidUpdateCreateRequest(req.body)) {
     const status = 400;
     utils.mkJsonError(res, status)(http.STATUS_CODES[status]);
     return;
