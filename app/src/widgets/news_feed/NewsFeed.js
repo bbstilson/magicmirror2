@@ -1,6 +1,6 @@
-import Widget from '../../models/Widget.js';
-
 import { EndPoint } from '../../constants/Api.js';
+import Position from '../../models/Position.js';
+import Widget from '../../models/Widget.js';
 
 import './NewsFeed.css';
 
@@ -9,11 +9,11 @@ import Loading from 'react-simple-loading';
 import moment from 'moment';
 import React, { Component } from 'react';
 
-export const NewsFeedWidget = new Widget(
-  "News Feed",
-  "Displays news headlines based on an RSS feed.",
-  { height: 8, width: 1, square: false }
-);
+export const NewsFeedWidget = new Widget({
+  name: 'News Feed',
+  description: 'Displays news recent news headlines.',
+  size: Position({ height: 8, width: 1, square: false })
+});
 
 const ONE_HOUR = (60 * 60 * 1000);
 const DEFAULT_STATE = {

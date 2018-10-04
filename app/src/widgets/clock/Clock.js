@@ -1,3 +1,4 @@
+import Position from '../../models/Position.js';
 import Widget from '../../models/Widget.js';
 
 import './Clock.css';
@@ -5,11 +6,11 @@ import './Clock.css';
 import moment from 'moment';
 import React, { Component } from 'react';
 
-export const ClockWidget = new Widget(
-  "Clock",
-  "Displays the current time.",
-  { width: 4, height: 15, square: false }
-);
+export const ClockWidget = new Widget({
+  name: 'Clock',
+  description: 'Displays the current time.',
+  size: Position({ width: 4, height: 15, square: false })
+});
 
 type Props = {};
 type State = {|

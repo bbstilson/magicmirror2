@@ -4,13 +4,12 @@ import WidgetModel from '../../models/Widget.js';
 
 import './WidgetPicker.css';
 
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import type { List } from 'immutable';
+import * as Immutable from 'immutable';
+import React, { Component } from 'react';
 
 type Props = {|
-  available: List<WidgetModel>,
+  available: Immutable.List<WidgetModel>,
 |};
 
 class WidgetPicker extends Component<Props> {

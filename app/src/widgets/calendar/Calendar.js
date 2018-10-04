@@ -1,3 +1,4 @@
+import Position from '../../models/Position.js';
 import Widget from '../../models/Widget.js';
 
 import './Calendar.css';
@@ -6,11 +7,11 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
 
-export const CalendarWidget = new Widget(
-  "Calendar",
-  "Displays a calendar with the current day highlighted.",
-  { width: 2, height: 4, square: false }
-);
+export const CalendarWidget = new Widget({
+  name: 'Calendar',
+  description: 'Displays a calendar with the current day highlighted.',
+  size: Position({ width: 2, height: 4, square: false })
+});
 
 function createWeeks(now) {
   const start = now.startOf('month');

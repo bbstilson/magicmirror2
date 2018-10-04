@@ -1,21 +1,19 @@
 import WidgetButton, { WidgetButtonType } from './WidgetButton.js';
 
 import { addWidget, removeWidget } from '../../redux/modules/widgets.js';
-
 import WidgetModel from '../../models/Widget.js';
 
 import './Widget.css';
 
-import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import type { Map } from 'immutable';
+import * as Immutable from 'immutable';
+import React, { Component } from 'react';
 
 type Props = {|
   widget: WidgetModel,
   addWidget: Function, // fix us... (widget: Widget) => any?
   removeWidget: Function, // fix us... (widget: Widget) => any?
-  active: Map<string, WidgetModel>,
+  active: Immutable.Map<string, WidgetModel>,
   expanded: boolean,
 |};
 

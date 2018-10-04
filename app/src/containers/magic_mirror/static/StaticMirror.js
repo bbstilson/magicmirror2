@@ -4,16 +4,16 @@ import { Widgets } from '../../../widgets/index.js';
 
 import './StaticMirror.css';
 
-import type Widget from '../../../models/Widget.js';
-import type { Map } from 'immutable';
-
+import * as Immutable from 'immutable';
 import { connect } from 'react-redux';
 import React from 'react';
+
+import type Widget from '../../../models/Widget.js';
 
 type Props = {|
   width: number,
   height: number,
-  active: Map<string, Widget>,
+  active: Immutable.Map<string, Widget>,
   displayModuleBorders: boolean,
 |};
 
