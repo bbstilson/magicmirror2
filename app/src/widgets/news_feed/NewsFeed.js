@@ -1,6 +1,6 @@
 import { EndPoint } from '../../constants/Api.js';
-import Position from '../../models/Position.js';
 import Widget from '../../models/Widget.js';
+import WidgetDimension from '../../models/WidgetDimension.js';
 
 import './NewsFeed.css';
 
@@ -12,7 +12,7 @@ import React, { Component } from 'react';
 export const NewsFeedWidget = new Widget({
   name: 'News Feed',
   description: 'Displays news recent news headlines.',
-  size: Position({ height: 8, width: 1, square: false })
+  size: WidgetDimension({ height: 8, width: 1, square: false })
 });
 
 const ONE_HOUR = (60 * 60 * 1000);

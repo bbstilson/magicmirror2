@@ -7,6 +7,8 @@
  * @param {number} - The display size (width or height).
  */
 
-export function getValueByDividingBy (divisor: number): Function {
-  return (displayDimension: number) => displayDimension / divisor;
+export function getValueByDividingBy(
+  divisor: number
+): (displayDimension: number) => number {
+  return (displayDimension) => displayDimension / divisor;
 }

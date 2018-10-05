@@ -1,6 +1,6 @@
 import { EndPoint } from '../../constants/Api.js';
-import Position from '../../models/Position.js';
 import Widget from '../../models/Widget.js';
+import WidgetDimension from '../../models/WidgetDimension.js';
 
 import './CurrentWeather.css';
 
@@ -12,7 +12,7 @@ import Skycon from 'react-skycons';
 export const CurrentWeatherWidget = new Widget({
   name: 'Current Weather',
   description: 'Displays the current weather, which includes the temperature and an icon to display the current conditions.',
-  size: Position({ height: 8, square: true })
+  size: WidgetDimension({ height: 8, square: true })
 });
 
 const FIFTEEN_MINUTES = (15 * 60 * 1000);
@@ -46,7 +46,7 @@ export default class CurrentWeather extends Component<Props, State> {
         const { icon, temperature, summary } = data;
 
         this.setState({
-          icon: icon.toUpperCase().replace('-', '_'), // format icons for Skycons
+          icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
           temperature,
           summary,
           loading: false

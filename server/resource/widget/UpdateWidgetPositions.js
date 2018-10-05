@@ -5,6 +5,7 @@ const widgetPositionService = require('../../service/widget/WidgetPositionsServi
 const http = require('http');
 
 module.exports = function updateWidgetPositions(req, res) {
+  console.log(req.body);
   if (
     !Array.isArray(req.body) ||
     !req.body.every(w => isValidUpdateCreateRequest(w))

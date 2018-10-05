@@ -1,22 +1,6 @@
 import { getValueByDividingBy } from './utils.js';
 
-import Immutable from 'immutable';
-
-type WidgetDimensionProps = {|
-  height: number,
-  width?: number,
-  square: boolean
-|};
-
-const WidgetDimensionDefaultProps: WidgetDimensionProps = {
-  height: 0,
-  width: 0,
-  square: false
-};
-
-export type WidgetDimensionRecord = Immutable.Record<WidgetDimensionProps> & WidgetDimensionProps;
-
-export const WidgetDimension = Immutable.Record(WidgetDimensionDefaultProps);
+import WidgetDimension from './WidgetDimension.js';
 
 export type WidgetSize = {|
   square: boolean,
@@ -52,7 +36,7 @@ export default class Widget {
   }: {
     name: string,
     description: string,
-    size: WidgetDimensionRecord,
+    size: WidgetDimension,
     custom?: CustomProps
   }) {
     if (name === undefined) {
@@ -75,10 +59,13 @@ export default class Widget {
     return new Widget({ name: '', description: '', size: WidgetDimension() });
   }
 
-  setSize({ width, height, square }: WidgetDimensionRecord): WidgetSize {
+  setSize(size: WidgetDimension): WidgetSize {
+    const { width, height, square } = size;
+    const fixedWidth = isNaN(width) ? 0 : width;
+
     return {
       square,
-      calculateWidthFrom: getValueByDividingBy(width || 0),
+      calculateWidthFrom: getValueByDividingBy(fixedWidth),
       calculateHeightFrom: getValueByDividingBy(height)
     };
   }

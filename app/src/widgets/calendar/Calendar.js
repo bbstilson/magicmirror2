@@ -1,5 +1,5 @@
-import Position from '../../models/Position.js';
 import Widget from '../../models/Widget.js';
+import WidgetDimension from '../../models/WidgetDimension.js';
 
 import './Calendar.css';
 
@@ -10,7 +10,7 @@ import classnames from 'classnames';
 export const CalendarWidget = new Widget({
   name: 'Calendar',
   description: 'Displays a calendar with the current day highlighted.',
-  size: Position({ width: 2, height: 4, square: false })
+  size: WidgetDimension({ width: 2, height: 4, square: false })
 });
 
 function createWeeks(now) {

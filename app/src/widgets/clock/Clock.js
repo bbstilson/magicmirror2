@@ -1,5 +1,5 @@
-import Position from '../../models/Position.js';
 import Widget from '../../models/Widget.js';
+import WidgetDimension from '../../models/WidgetDimension.js';
 
 import './Clock.css';
 
@@ -9,7 +9,7 @@ import React, { Component } from 'react';
 export const ClockWidget = new Widget({
   name: 'Clock',
   description: 'Displays the current time.',
-  size: Position({ width: 4, height: 15, square: false })
+  size: WidgetDimension({ width: 4, height: 15, square: false })
 });
 
 type Props = {};

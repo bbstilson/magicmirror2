@@ -7,6 +7,7 @@
     "classnames": "^2.2.6",
     "immutable": "^4.0.0-rc.10",
     "moment": "^2.22.2",
+    "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-dnd": "^5.0.0",
     "react-dnd-html5-backend": "^5.0.1",

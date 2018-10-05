@@ -1,19 +1,18 @@
 import StaticWidget from '../../../components/widget/StaticWidget.js';
 
 import { Widgets } from '../../../widgets/index.js';
+import WidgetPosition from '../../../models/WidgetPosition.js';
 
-import './StaticMirror.css';
-
-import * as Immutable from 'immutable';
 import { connect } from 'react-redux';
+import * as Immutable from 'immutable';
 import React from 'react';
 
-import type Widget from '../../../models/Widget.js';
+import './StaticMirror.css';
 
 type Props = {|
   width: number,
   height: number,
-  active: Immutable.Map<string, Widget>,
+  active: Immutable.Map<string, WidgetPosition>,
   displayModuleBorders: boolean,
 |};
 
@@ -24,6 +23,7 @@ const StaticMirror = ({ width, height, active, displayModuleBorders }: Props) =>
         <StaticWidget
           key={widgetName}
           component={Widgets.get(widgetName)}
+          position={active.get(widgetName).position}
           displayModuleBorders={displayModuleBorders}
         />
       );

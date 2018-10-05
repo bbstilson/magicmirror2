@@ -5,15 +5,15 @@ import Immutable from 'immutable';
 
 import type { PositionRecord } from './Position.js';
 
-const defaultProps: WidgetPositionProps = {
-  widget: Widget.empty(),
-  position: Position()
-};
-
 export type WidgetPositionProps = {|
   widget: Widget,
   position: PositionRecord,
 |};
+
+const defaultProps: WidgetPositionProps = {
+  widget: Widget.empty(),
+  position: Position()
+};
 
 export type WidgetPositionRecord = Immutable.Record<WidgetPositionProps> & WidgetPositionProps;
 

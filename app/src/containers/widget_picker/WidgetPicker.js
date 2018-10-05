@@ -1,3 +1,4 @@
+import SaveWidgetPositions from '../../components/SaveWidgetPositions.js';
 import Widget from '../../components/widget/Widget.js';
 
 import WidgetModel from '../../models/Widget.js';
@@ -19,7 +20,8 @@ class WidgetPicker extends Component<Props> {
     return (
       <div className="widget-picker flex--column--center">
         <div className="full-width">
-          {available.map(mod => <Widget key={mod.name} widget={mod} />)}
+          {available.map((mod) => <Widget key={mod.name} widget={mod} />)}
+          <SaveWidgetPositions />
         </div>
       </div>
     );

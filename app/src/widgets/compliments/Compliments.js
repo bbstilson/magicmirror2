@@ -1,6 +1,6 @@
 import { pluck } from '../../utils/utils.js';
-import Position from '../../models/Position.js';
 import Widget from '../../models/Widget.js';
+import WidgetDimension from '../../models/WidgetDimension.js';
 
 import './Compliments.css';
 
@@ -55,7 +55,7 @@ const compliments = [
 export const ComplimentsWidget = new Widget({
   name: 'Compliments',
   description: 'Displays a random compliment 😊',
-  size: Position({ width: 1.1, height: 15, square: false })
+  size: WidgetDimension({ width: 1.1, height: 15, square: false })
 });
 
 const FIVE_MINUTES = (1000 * 60 * 5);
