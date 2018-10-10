@@ -127,7 +127,8 @@ export function saveWidgetPositions(widgetPositions: Immutable.List<WidgetPositi
       .map(({ widget: { name }, position: { top, left }}) => ({
         top,
         left,
-        widgetName: name
+        widgetName: name,
+        active: true
       }))
       .toJS();
 

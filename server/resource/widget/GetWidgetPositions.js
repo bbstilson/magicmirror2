@@ -4,7 +4,13 @@ const widgetPositionService = require('../../service/widget/WidgetPositionsServi
 module.exports = function getAllWidgetPositions(req, res) {
   widgetPositionService.getAllWidgetPositions()
     .then((data) => {
-      res.status(200).json(data.map(_ => _.dataValues));
+      res
+        .status(200)
+        .json(data.map(_ => _.dataValues));
     })
-    .catch(utils.mkJsonError(res));
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error });
+    });
 }

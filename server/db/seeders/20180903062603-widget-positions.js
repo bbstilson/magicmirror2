@@ -20,7 +20,7 @@ function widgetToRow({ widgetName, displayName, description, width, height }) {
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert(
-      'widget_positions',
+      WidgetPositionsConfig.TABLE_NAME,
       WidgetPositionsConfig.WIDGETS.map(widgetToRow),
       {}
     );
