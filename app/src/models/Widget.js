@@ -8,10 +8,6 @@ export type WidgetSize = {|
   calculateHeightFrom: Function
 |};
 
-type CustomProps = {|
-  [string]: any
-|};
-
 /**
  * @param {string} name - The display name used on the DraggableMirror.
  * @param {string} description - The description of the widget used on the WidgetPicker.
@@ -26,7 +22,6 @@ export default class Widget {
   name: string;
   description: string;
   size: WidgetSize;
-  custom: ?CustomProps;
 
   constructor({
     name, 
@@ -36,8 +31,7 @@ export default class Widget {
   }: {
     name: string,
     description: string,
-    size: WidgetDimension,
-    custom?: CustomProps
+    size: WidgetDimension
   }) {
     if (name === undefined) {
       this.throwError('name');
@@ -52,7 +46,6 @@ export default class Widget {
     this.name = name;
     this.description = description;
     this.size = this.setSize(size);
-    this.custom = custom;
   }
 
   static empty() {
@@ -60,12 +53,10 @@ export default class Widget {
   }
 
   setSize(size: WidgetDimension): WidgetSize {
-    const { width, height, square } = size;
-    const fixedWidth = isNaN(width) ? 0 : width;
+    const { width, height } = size;
 
     return {
-      square,
-      calculateWidthFrom: getValueByDividingBy(fixedWidth),
+      calculateWidthFrom: getValueByDividingBy(width),
       calculateHeightFrom: getValueByDividingBy(height)
     };
   }

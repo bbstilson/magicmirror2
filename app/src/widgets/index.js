@@ -1,29 +1,21 @@
-import Calendar, { CalendarWidget } from './calendar/Calendar.js';
-import Clock, { ClockWidget } from './clock/Clock.js';
-import Compliments, { ComplimentsWidget } from './compliments/Compliments.js';
-import CurrentWeather, { CurrentWeatherWidget } from './current_weather/CurrentWeather.js';
-import NewsFeed, { NewsFeedWidget } from './news_feed/NewsFeed.js';
-import Today, { TodayWidget } from './today/Today.js';
-import WeatherForecast, { WeatherForecastWidget } from './weather_forecast/WeatherForecast.js';
+import Calendar from './calendar/Calendar.js';
+import Clock from './clock/Clock.js';
+import Compliments from './compliments/Compliments.js';
+import CurrentWeather from './current_weather/CurrentWeather.js';
+import NewsFeed from './news_feed/NewsFeed.js';
+import Today from './today/Today.js';
+import WeatherForecast from './weather_forecast/WeatherForecast.js';
 
 import Immutable from 'immutable';
 
-export const WidgetModels = Immutable.List.of(
-  CalendarWidget,
-  ClockWidget,
-  ComplimentsWidget,
-  CurrentWeatherWidget,
-  NewsFeedWidget,
-  TodayWidget,
-  WeatherForecastWidget,
-);
-
+// These are loaded into the database at start up. They are keyed off of their widget_name.
+// See: ./server/widgets.js
 export const Widgets = Immutable.Map({
-  [CalendarWidget.name]:        Calendar,
-  [ClockWidget.name]:           Clock,
-  [ComplimentsWidget.name]:     Compliments,
-  [CurrentWeatherWidget.name]:  CurrentWeather,
-  [NewsFeedWidget.name]:        NewsFeed,
-  [TodayWidget.name]:           Today,
-  [WeatherForecastWidget.name]: WeatherForecast,
+  calendar: Calendar,
+  clock: Clock,
+  compliments: Compliments,
+  currentWeather: CurrentWeather,
+  newsFeed: NewsFeed,
+  today: Today,
+  weatherForecast: WeatherForecast,
 });

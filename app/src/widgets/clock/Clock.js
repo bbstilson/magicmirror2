@@ -1,16 +1,7 @@
-import Widget from '../../models/Widget.js';
-import WidgetDimension from '../../models/WidgetDimension.js';
-
 import './Clock.css';
 
 import moment from 'moment';
 import React, { Component } from 'react';
-
-export const ClockWidget = new Widget({
-  name: 'Clock',
-  description: 'Displays the current time.',
-  size: WidgetDimension({ width: 4, height: 15, square: false })
-});
 
 type Props = {};
 type State = {|

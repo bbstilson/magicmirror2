@@ -1,6 +1,4 @@
 import { EndPoint } from '../../constants/Api.js';
-import Widget from '../../models/Widget.js';
-import WidgetDimension from '../../models/WidgetDimension.js';
 
 import './NewsFeed.css';
 
@@ -8,12 +6,6 @@ import axios from 'axios';
 import Loading from 'react-simple-loading';
 import moment from 'moment';
 import React, { Component } from 'react';
-
-export const NewsFeedWidget = new Widget({
-  name: 'News Feed',
-  description: 'Displays news recent news headlines.',
-  size: WidgetDimension({ height: 8, width: 1, square: false })
-});
 
 const ONE_HOUR = (60 * 60 * 1000);
 const DEFAULT_STATE = {

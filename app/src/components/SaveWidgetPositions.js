@@ -23,24 +23,44 @@ class SaveWidgetPositions extends React.Component<Props> {
     return !active.equals(lastPositionSave);
   }
 
-  handleClick = (): void => {
+  handleSaveClick = (): void => {
     if (this.hasChangedPositions()) {
       const { saveWidgetPositions, active } = this.props;
       saveWidgetPositions(active.toIndexedSeq());
     }
   }
 
+  handleUndoClick = (): void => {
+    if (this.hasChangedPositions()) {
+      console.log('undoing changes!');
+      // this.props.undoWidgetPositionChanges();
+    }
+  }
+
   render() {
     const hasChangedPositions = this.hasChangedPositions();
-    const classes = classnames({
+    const saveBtnClasses = classnames({
       'btn': true,
+      'position-state-btn': true,
       'save-positions': true,
       'save-positions__in-sync': !hasChangedPositions
     });
+    const undoBtnClasses = classnames({
+      'btn': true,
+      'position-state-btn': true,
+      'undo-changes': true
+    });
     return (
-      <button className={classes} onClick={this.handleClick}>
-        {hasChangedPositions ? 'Save' : 'Synced!'}
-      </button>
+      <div className="position-state-buttons">
+        <button className={saveBtnClasses} onClick={this.handleSaveClick}>
+          {hasChangedPositions ? 'Save' : 'Synced!'}
+        </button>
+        {hasChangedPositions && (
+          <button className={undoBtnClasses} onClick={this.handleUndoClick}>
+            Undo
+          </button>
+        )}
+      </div>
     );
   }
 }

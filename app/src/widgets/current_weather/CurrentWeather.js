@@ -1,6 +1,4 @@
 import { EndPoint } from '../../constants/Api.js';
-import Widget from '../../models/Widget.js';
-import WidgetDimension from '../../models/WidgetDimension.js';
 
 import './CurrentWeather.css';
 
@@ -8,12 +6,6 @@ import axios from 'axios';
 import Loading from 'react-simple-loading';
 import React, { Component } from 'react';
 import Skycon from 'react-skycons';
-
-export const CurrentWeatherWidget = new Widget({
-  name: 'Current Weather',
-  description: 'Displays the current weather, which includes the temperature and an icon to display the current conditions.',
-  size: WidgetDimension({ height: 8, square: true })
-});
 
 const FIFTEEN_MINUTES = (15 * 60 * 1000);
 

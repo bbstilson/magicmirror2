@@ -1,5 +1,5 @@
+import { EndPoint } from '../../constants/Api.js';
 import Widget from '../../models/Widget.js';
-import { WidgetModels } from '../../widgets/index.js';
 import WidgetPosition from '../../models/WidgetPosition.js';
 
 import axios from 'axios';
@@ -110,6 +110,15 @@ function savingWidgetPositionFailure(): SavingWidgetPositionFailure {
   };
 }
 
+function responseToState(rows) {
+  // Immutable.Map<string, WidgetPositionRecord>
+  return rows.reduce((map, row) => {
+    // const { widget_name, top, left, created_at, updated_at } = row;
+    // return map.set(...)
+    return map;
+  }, Immutable.Map())
+}
+
 export function saveWidgetPositions(widgetPositions: Immutable.List<WidgetPositionRecord>): Function {
   return (dispatch) => {
     dispatch(savingWidgetPosition());
@@ -122,20 +131,14 @@ export function saveWidgetPositions(widgetPositions: Immutable.List<WidgetPositi
       }))
       .toJS();
 
-    console.log(`http://localhost:4000/api/widgets`, positionsToSave);
-
     axios({
-      url: 'http://localhost:4000/api/widgets',
-      method: 'put',
-      body: JSON.stringify(positionsToSave),
-      // headers: {
-      //   'Accept': 'application/json',
-      //   'Content-Type': 'application/json',
-      // }
+      method: 'PUT',
+      url: EndPoint.WIDGETS,
+      data: JSON.stringify(positionsToSave),
+      headers: { 'Content-Type': 'application/json' }
     })
-      .then((data) => {
-        console.log(data);
-        dispatch(savingWidgetPositionSuccess());
+      .then(({ data }) => {
+        dispatch(savingWidgetPositionSuccess(responseToState(data)));
       })
       .catch((error) => {
         console.error(error);
@@ -151,7 +154,7 @@ export function saveWidgetPositions(widgetPositions: Immutable.List<WidgetPositi
 
 const INITIAL_STATE = {
   active: Immutable.Map(),
-  available: WidgetModels,
+  available: Immutable.List(),
   lastPositionSave: Immutable.Map(),
   savingPositions: false,
   savePositionsError: false,
@@ -209,16 +212,17 @@ export default (
         ...state,
         savingPositions: false,
         savePositionsError: false,
-      }
+      };
     }
     case SAVING_WIDGET_POSITIONS_FAILURE: {
       return {
         ...state,
         savingPositions: false,
         savePositionsError: true,
-      }
+      };
     }
-    default:
+    default: {
       return state;
+    }
   }
 }

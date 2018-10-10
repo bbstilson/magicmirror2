@@ -5,7 +5,6 @@ const widgetPositionService = require('../../service/widget/WidgetPositionsServi
 const http = require('http');
 
 module.exports = function updateWidgetPositions(req, res) {
-  console.log(req.body);
   if (
     !Array.isArray(req.body) ||
     !req.body.every(w => isValidUpdateCreateRequest(w))
@@ -15,8 +14,13 @@ module.exports = function updateWidgetPositions(req, res) {
   }
 
   widgetPositionService.updateWidgetPositions(req.body)
+    .then(() => widgetPositionService.getAllWidgetPositions())
     .then((data) => {
-      utils.endWithStatus(200, res);
+      res
+        .status(200)
+        .json(
+          data.map(_ => _.dataValues)
+        );
     })
     .catch((error) => {
       utils.endWithStatus(error === 0 ? 400 : 500, res);

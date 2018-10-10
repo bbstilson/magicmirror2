@@ -1,17 +1,8 @@
-import Widget from '../../models/Widget.js';
-import WidgetDimension from '../../models/WidgetDimension.js';
-
 import './Calendar.css';
 
 import React, { Component } from 'react';
 import moment from 'moment';
 import classnames from 'classnames';
-
-export const CalendarWidget = new Widget({
-  name: 'Calendar',
-  description: 'Displays a calendar with the current day highlighted.',
-  size: WidgetDimension({ width: 2, height: 4, square: false })
-});
 
 function createWeeks(now) {
   const start = now.startOf('month');

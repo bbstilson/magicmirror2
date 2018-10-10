@@ -1,20 +1,11 @@
-import ForecastDay from './ForecastDay.js';
-
 import { EndPoint } from '../../constants/Api.js';
-import Widget from '../../models/Widget.js';
-import WidgetDimension from '../../models/WidgetDimension.js';
+import ForecastDay from './ForecastDay.js';
 
 import './WeatherForecast.css';
 
 import React, { Component } from 'react';
 import Loading from 'react-simple-loading';
 import axios from 'axios';
-
-export const WeatherForecastWidget = new Widget({
-  name: 'Weather Forecast',
-  description: 'Displays the weather forecast for the coming week, including an an icon to display the current conditions, the minimum temperature and the maximum temperature.',
-  size: WidgetDimension({ width: 2, height: 4, square: false })
-});
 
 const FOUR_HOURS = (4 * 60 * 60 * 1000);
 const DEFAULT_STATE = {
