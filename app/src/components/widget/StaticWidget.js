@@ -18,7 +18,7 @@ const StaticWidget = ({ component: Component, position, displayWidgetBorders }: 
   });
   return (
     <div
-      style={position}
+      style={position.toJS()}
       className={classes}
     >
       <Component />
