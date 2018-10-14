@@ -1,4 +1,5 @@
 import { saveWidgetPositions } from '../redux/modules/save_widgets.js';
+import { undoWidgetPositionChanges } from '../redux/modules/widgets.js';
 
 import classnames from 'classnames';
 import { connect } from 'react-redux';
@@ -7,12 +8,13 @@ import * as React from 'react';
 import './SaveWidgetPositions.css';
 
 import type { AppState } from '../redux/modules/index.js';
-import type { PositionsType } from '../redux/modules/widgets.js';
+import type { PositionsType, UpdateWidgetPositionChanges } from '../redux/modules/widgets.js';
 
 type Props = {|
-  saveWidgetPositions: () => Function,
   positions: PositionsType,
   lastPositionSave: PositionsType,
+  saveWidgetPositions: () => Function,
+  undoWidgetPositionChanges: () => UpdateWidgetPositionChanges,
 |};
 
 function hasChangedPositions({ positions, lastPositionSave }): boolean {
@@ -30,8 +32,7 @@ class SaveWidgetPositions extends React.Component<Props> {
 
   handleUndoClick = (): void => {
     if (hasChangedPositions(this.props)) {
-      console.log('undoing changes!');
-      // this.props.undoWidgetPositionChanges();
+      this.props.undoWidgetPositionChanges();
     }
   }
 
@@ -72,4 +73,9 @@ function mapStateToProps({
   };
 }
 
-export default connect(mapStateToProps, { saveWidgetPositions })(SaveWidgetPositions);
+const mapDispatchToProps = {
+  saveWidgetPositions,
+  undoWidgetPositionChanges,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SaveWidgetPositions);
