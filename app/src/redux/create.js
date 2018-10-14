@@ -1,9 +1,14 @@
 import rootReducer from './modules/index.js';
 
 import { applyMiddleware, createStore } from 'redux';
-import thunk from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
+import { createLogger } from 'redux-logger';
+
+const loggerMiddleware = createLogger()
 
 export default () => {
-  const middleware = [ thunk ];
-  return applyMiddleware(...middleware)(createStore)(rootReducer)
+  return applyMiddleware(
+    thunkMiddleware,
+    loggerMiddleware
+  )(createStore)(rootReducer);
 }

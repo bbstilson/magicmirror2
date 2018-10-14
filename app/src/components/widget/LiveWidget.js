@@ -1,5 +1,4 @@
 import Widget from '../../models/Widget.js';
-import { positionAndDimensionsToStyles } from '../../utils/styles.js';
 
 import './LiveWidget.css';
 
@@ -15,11 +14,10 @@ type Props = {|
 
 const LiveWidget = ({ widget, dimensions: { width, height }}: Props) => {
   const { name, size } = widget;
-  const computedHeight = size.calculateHeightFrom(height);
-  const styles = positionAndDimensionsToStyles({
-    width: size.square ? computedHeight : size.calculateWidthFrom(width),
-    height: computedHeight,
-  });
+  const styles = {
+    width: size.calculateWidth(width),
+    height: size.calculateHeight(height),
+  };
 
   return (
     <div

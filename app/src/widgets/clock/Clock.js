@@ -1,22 +1,14 @@
-import Widget from '../../models/Widget.js';
+import moment from 'moment';
+import * as React from 'react';
 
 import './Clock.css';
-
-import moment from 'moment';
-import React, { Component } from 'react';
-
-export const ClockWidget = new Widget(
-  "Clock",
-  "Displays the current time.",
-  { width: 4, height: 15, square: false }
-);
 
 type Props = {};
 type State = {|
   now: number
 |};
 
-export default class Clock extends Component<Props, State> {
+export default class Clock extends React.Component<Props, State> {
   clockInterval: IntervalID;
 
   state = {

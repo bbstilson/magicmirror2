@@ -1,19 +1,25 @@
 const widgetPositionsDao = require('../../dao/widget/WidgetPositionsDao.js');
 
-module.exports = {
-  getAllWidgetPositions: function getAllWidgetPositions() {
-    return widgetPositionsDao.getAllWidgetPositions();
-  },
-
-  updateWidgetPosition: function updateWidgetPosition({ widgetName, top, left }) {
-    return widgetPositionsDao.updateWidgetPosition({ widgetName, top, left });
-  },
-
-  createWidgetPosition: function createWidgetPosition({ widgetName, top, left }) {
-    return widgetPositionsDao.createWidgetPosition({ widgetName, top, left });
-  },
-
-  deleteWidgetPosition: function deleteWidgetPosition(widgetName) {
-    return widgetPositionsDao.deleteWidgetPosition(widgetName);
-  },
+function getAllWidgetPositions() {
+  return widgetPositionsDao.getAllWidgetPositions();
 }
+
+function updateWidgetPositions(positions) {
+  return Promise.all(
+    positions
+      .map((position) => {
+        const { id, top, left, active } = position;
+        return active
+          ? position
+          // reset position to (0,0) if deactivating widget
+          : { id, active, top: 0, left: 0 };
+      })
+      .map(widgetPositionsDao.updateWidgetPositions)
+  );
+}
+
+module.exports = {
+  getAllWidgetPositions: getAllWidgetPositions,
+
+  updateWidgetPositions: updateWidgetPositions,
+};

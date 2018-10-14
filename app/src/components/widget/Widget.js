@@ -1,37 +1,37 @@
 import WidgetButton, { WidgetButtonType } from './WidgetButton.js';
 
 import { addWidget, removeWidget } from '../../redux/modules/widgets.js';
-
 import WidgetModel from '../../models/Widget.js';
+
+import { connect } from 'react-redux';
+import * as React from 'react';
 
 import './Widget.css';
 
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-
-import type { Map } from 'immutable';
+import type { AppState } from '../../redux/modules/index.js';
+import type { AddWidget, RemoveWidget, PositionsType } from '../../redux/modules/widgets.js';
 
 type Props = {|
   widget: WidgetModel,
-  addWidget: Function, // fix us... (widget: Widget) => any?
-  removeWidget: Function, // fix us... (widget: Widget) => any?
-  active: Map<string, WidgetModel>,
+  addWidget: (id: number) => AddWidget,
+  removeWidget: (id: number) => RemoveWidget,
+  positions: PositionsType,
   expanded: boolean,
 |};
 
-class Widget extends Component<Props> {
-  addWidget = (widget: WidgetModel): void => {
-    this.props.addWidget(this.props.widget);
+class Widget extends React.Component<Props> {
+  addWidget = (): void => {
+    this.props.addWidget(this.props.widget.id);
   }
 
-  removeWidget = (widget: WidgetModel): void => {
-    this.props.removeWidget(this.props.widget);
+  removeWidget = (): void => {
+    this.props.removeWidget(this.props.widget.id);
   }
 
   render() {
-    const { widget, active, expanded } = this.props;
-    const { name, description } = widget;
-    const isActive = active.has(name);
+    const { widget, positions, expanded } = this.props;
+    const { id, name, description } = widget;
+    const isActive = positions.get(id).active;
 
     return (
       <div className="widget__container">
@@ -60,10 +60,13 @@ class Widget extends Component<Props> {
   }
 }
 
-function mapStateToProps({ ui, widgets: { active }}) {
+function mapStateToProps({
+  ui: { expanded },
+  widgets: { positions }
+}: AppState) {
   return {
-    expanded: ui.expanded,
-    active: active
+    positions,
+    expanded,
   };
 }
 

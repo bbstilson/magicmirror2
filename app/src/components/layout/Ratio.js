@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 
 type Props = {|
   x: number,
@@ -11,7 +11,7 @@ type State = {|
   height: number,
 |};
 
-export default class Ratio extends Component<Props, State> {
+export default class Ratio extends React.Component<Props, State> {
   state = {
     width: 0,
     height: 0

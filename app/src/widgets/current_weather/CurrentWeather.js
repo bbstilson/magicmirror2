@@ -1,18 +1,11 @@
 import { EndPoint } from '../../constants/Api.js';
-import Widget from '../../models/Widget.js';
 
 import './CurrentWeather.css';
 
 import axios from 'axios';
 import Loading from 'react-simple-loading';
-import React, { Component } from 'react';
+import * as React from 'react';
 import Skycon from 'react-skycons';
-
-export const CurrentWeatherWidget = new Widget(
-  "Current Weather",
-  "Displays the current weather, which includes the temperature and an icon to display the current conditions.",
-  { height: 8, square: true }
-);
 
 const FIFTEEN_MINUTES = (15 * 60 * 1000);
 
@@ -31,7 +24,7 @@ type State = {|
   summary: string
 |};
 
-export default class CurrentWeather extends Component<Props, State> {
+export default class CurrentWeather extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
   state = DEFAULT_STATE
@@ -45,7 +38,7 @@ export default class CurrentWeather extends Component<Props, State> {
         const { icon, temperature, summary } = data;
 
         this.setState({
-          icon: icon.toUpperCase().replace('-', '_'), // format icons for Skycons
+          icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
           temperature,
           summary,
           loading: false

@@ -1,19 +1,11 @@
-import ForecastDay from './ForecastDay.js';
-
-import Widget from '../../models/Widget.js';
 import { EndPoint } from '../../constants/Api.js';
+import ForecastDay from './ForecastDay.js';
 
 import './WeatherForecast.css';
 
-import React, { Component } from 'react';
-import Loading from 'react-simple-loading';
 import axios from 'axios';
-
-export const WeatherForecastWidget = new Widget(
-  "Weather Forecast",
-  "Displays the weather forecast for the coming week, including an an icon to display the current conditions, the minimum temperature and the maximum temperature.",
-  { width: 2, height: 4, square: false }
-);
+import Loading from 'react-simple-loading';
+import * as React from 'react';
 
 const FOUR_HOURS = (4 * 60 * 60 * 1000);
 const DEFAULT_STATE = {
@@ -34,7 +26,7 @@ type State = {|
 |};
 
 
-export default class WeatherForecast extends Component<Props, State> {
+export default class WeatherForecast extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
   state = DEFAULT_STATE
@@ -45,7 +37,13 @@ export default class WeatherForecast extends Component<Props, State> {
     // TODO: make these dynamic
     axios.get(`${EndPoint.WEATHER_FORECAST}?lat=${37.8267}&lon=${-122.4233}`)
       .then(({ data }) => {
-        this.setState({ data: data.data, loading: false });
+        this.setState({
+          loading: false,
+          data: data.data.map(({ icon, ...rest }) => ({
+            icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
+            ...rest
+          })),
+        });
       })
       .catch((err) => {
         this.setState({

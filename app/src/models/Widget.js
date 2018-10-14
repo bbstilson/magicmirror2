@@ -1,97 +1,84 @@
 import { getValueByDividingBy } from './utils.js';
 
+import WidgetDimension from './WidgetDimension.js';
+
+export type WidgetSize = {|
+  calculateWidth: Function,
+  calculateHeight: Function
+|};
+
+export type RawWidgetPosition = {
+  id: number,
+  name: string,
+  description: string,
+  width: number,
+  height: number,
+  top: number,
+  left: number,
+  active: boolean,
+};
+
 /**
  * @param {string} name - The display name used on the DraggableMirror.
  * @param {string} description - The description of the widget used on the WidgetPicker.
  * @param {object} size - The ratio sizes for the widget. E.g., { width: 2, height: 3 } signifies
  *                 that the widget's width should be half the containers width and should be 1/3 the
  *                 height of the container's height. If size contains `square`, then width is set
- *                 to the same ratio as the height.
- * @param {object} custom - Any custom values.
+ *                 to the same ratio as the he
  */
-
-export type WidgetPosition = {|
-  top: number,
-  left: number
-|};
-
-export type WidgetDimension = {|
-  height: number,
-  width?: number,
-  square: boolean
-|};
-
-export type WidgetSize = {|
-  square: boolean,
-  calculateWidthFrom: Function,
-  calculateHeightFrom: Function
-|};
-
-type CustomProps = {|
-  [string]: any
-|};
-
 export default class Widget {
+
+  id: number;
   name: string;
   description: string;
   size: WidgetSize;
-  position: WidgetPosition;
-  custom: ?CustomProps;
 
-  constructor(
+  fromDbRow: (row: RawWidgetPosition) => Widget;
+
+  constructor({
+    id,
+    name,
+    description,
+    size,
+  }: {
+    id: number,
     name: string,
     description: string,
-    size: WidgetDimension,
-    custom?: CustomProps
-  ) {
-    if (!name) {
-      this.throwError('name');
-    }
-    if (!description) {
-      this.throwError('description');
-    }
-    if (!size) {
-      this.throwError('size');
-    }
-
+    size: WidgetDimension
+  }) {
+    this.id = id;
     this.name = name;
     this.description = description;
     this.size = this.setSize(size);
-    this.position = this.initPosition();
-    this.custom = custom;
   }
 
-  /**
-   * Widgets start off at (0, 0) when added to Live View.
-   */
-  initPosition(): WidgetPosition {
-    return { top: 0, left: 0 };
+  static empty() {
+    return new Widget({
+      id: -1,
+      name: '',
+      description: '',
+      size: WidgetDimension()
+    });
   }
 
-  /**
-   * Updates the widget's position.
-   *
-   * @param {object} The new coordinates.
-   * @returm {this} Returns itself so it can be added back into the redux store.
-   */
-  updatePosition(newPosition: WidgetPosition): Widget {
-    this.position = newPosition;
-    return this;
-  }
+  setSize(size: WidgetDimension): WidgetSize {
+    const { width, height } = size;
 
-  getPosition() {
-    return this.position;
-  }
-
-  setSize({ width, height, square }: WidgetDimension): WidgetSize {
     return {
-      square,
-      calculateWidthFrom: getValueByDividingBy(width || 0),
-      calculateHeightFrom: getValueByDividingBy(height)
+      calculateWidth: getValueByDividingBy(width),
+      calculateHeight: getValueByDividingBy(height)
     };
   }
 
-  throwError(prop: string) {
-    throw new Error(`Property "${prop}" was not declared in Widget constructor.`);
+  static fromDbRow(row: RawWidgetPosition) {
+    return new Widget({
+      id: row.id,
+      name: row.name,
+      description: row.description,
+      size: WidgetDimension({
+        height: row.height,
+        width: row.width
+      })
+    });
   }
 }

@@ -1,7 +1,8 @@
-export const ROOT = 'http://localhost:4000';
+export const ROOT = 'http://localhost:4000/api';
 
 export const EndPoint = {
-  NEWS: `${ROOT}/api/news`,
-  CURRENT_WEATHER: `${ROOT}/api/weather/current`,
-  WEATHER_FORECAST: `${ROOT}/api/weather/forecast`
+  NEWS: `${ROOT}/news`,
+  CURRENT_WEATHER: `${ROOT}/weather/current`,
+  WEATHER_FORECAST: `${ROOT}/weather/forecast`,
+  WIDGETS: `${ROOT}/widgets`
 };

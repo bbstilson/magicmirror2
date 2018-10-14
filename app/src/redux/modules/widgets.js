@@ -1,10 +1,7 @@
-import { WidgetModels } from '../../widgets/index.js';
-import Widget from '../../models/Widget.js';
+import Position from '../../models/Position.js';
+import WidgetPosition from '../../models/WidgetPosition.js';
 
 import * as Immutable from 'immutable';
-
-import type { WidgetPosition } from '../../models/Widget.js';
-import type { List, Map } from 'immutable';
 
 /**
  * CONSTANTS
@@ -13,106 +10,131 @@ import type { List, Map } from 'immutable';
 const ADD_WIDGET = 'ADD_WIDGET';
 const REMOVE_WIDGET = 'REMOVE_WIDGET';
 const UPDATE_WIDGET_POSITION = 'UPDATE_WIDGET_POSITION';
+const SET_POSITION_STATE = 'SET_POSITION_STATE';
 
 /**
  * TYPES
  */
 
-export type AddWidget = {
+export type PositionsType = Immutable.Map<number, WidgetPosition>;
+
+export type AddWidget = {|
   type: 'ADD_WIDGET',
-  widget: Widget,
-}
-export type RemoveWidget = {
+  id: number,
+|};
+
+export type RemoveWidget = {|
   type: 'REMOVE_WIDGET',
-  widget: Widget,
-}
-export type UpdateWidgetPosition = {
+  id: number,
+|};
+
+export type UpdateWidgetPosition = {|
   type: 'UPDATE_WIDGET_POSITION',
-  widget: Widget,
-  position: WidgetPosition,
-}
+  id: number,
+  position: Position,
+|};
+
+export type SetPositionState = {|
+  type: 'SET_POSITION_STATE',
+  positions: PositionsType
+|};
 
 type Action =
   | AddWidget
   | RemoveWidget
   | UpdateWidgetPosition
+  | SetPositionState
+;
 
 /**
  * ACTIONS
  */
 
-export function addWidget (widget: Widget): AddWidget {
+export function addWidget (id: number): AddWidget {
   return {
-    widget,
+    id,
     type: ADD_WIDGET,
   };
 }
 
-export function removeWidget (widget: Widget): RemoveWidget {
+export function removeWidget (id: number): RemoveWidget {
   return {
-    widget,
-    type: REMOVE_WIDGET
+    id,
+    type: REMOVE_WIDGET,
   };
 }
 
-export function updateWidgetPosition (widget: Widget, position: WidgetPosition): UpdateWidgetPosition {
+export function updateWidgetPosition (id: number, position: Position): UpdateWidgetPosition {
   return {
-    widget,
+    id,
     position,
-    type: UPDATE_WIDGET_POSITION
+    type: UPDATE_WIDGET_POSITION,
+  };
+}
+
+export function setPositionState(positions: PositionsType): SetPositionState {
+  return {
+    positions,
+    type: SET_POSITION_STATE,
   };
 }
 
 /**
- * REDUCERS
+ * REDUCER
  */
 
-function updatePosition(action: UpdateWidgetPosition): any {
-  return (w: Widget): Widget => {
-    if (w.name === action.widget.name) {
-      return w.updatePosition(action.position);
-    }
-
-    return w;
-  }
-}
-
-
 const INITIAL_STATE = {
-  active: Immutable.Map(),
-  available: WidgetModels,
+  positions: Immutable.Map(),
+  lastPositionSave: Immutable.Map(),
 };
 
-type State = {
-  active: Map<string, Widget>,
-  available: List<Widget>,
-}
+export type WidgetsReducerState = {|
+  positions: PositionsType,
+  lastPositionSave: PositionsType,
+|};
 
 export default (
-  state: State = INITIAL_STATE,
+  state: WidgetsReducerState = INITIAL_STATE,
   action: Action,
 ) => {
-  const { active } = state;
-
   switch(action.type) {
-    case ADD_WIDGET:
+    case ADD_WIDGET: {
+      const { id } = action;
       return {
         ...state,
-        active: active.set(action.widget.name, action.widget)
+        positions: state.positions.update(id, (widgetPosition) =>
+          widgetPosition.update('active', () => true)
+        )
       };
-    case REMOVE_WIDGET:
+    }
+    case REMOVE_WIDGET: {
+      const { id } = action;
       return {
         ...state,
-        active: active.delete(action.widget.name)
+        positions: state.positions.update(id, (widgetPosition) =>
+          widgetPosition.update('active', () => false)
+        ),
       };
-    case UPDATE_WIDGET_POSITION:
-      // This makes flow happy for some reason...
-      const newActive: Map<string, Widget> = active.map(updatePosition(action));
+    }
+    case UPDATE_WIDGET_POSITION: {
+      const { id, position } = action;
       return {
         ...state,
-        active: newActive
+        positions: state.positions.update(id, (widgetPosition) =>
+          widgetPosition.update('position', () => position)
+        ),
       };
-    default:
+    }
+    case SET_POSITION_STATE: {
+      const { positions } = action;
+      return {
+        ...state,
+        positions,
+        lastPositionSave: positions,
+      };
+    }
+    default: {
       return state;
+    }
   }
 }

@@ -1,26 +1,27 @@
 import ItemType from '../../constants/ItemType.js';
-import Widget from '../../models/Widget.js';
 import LiveWidget from './LiveWidget.js';
 
 import { ConnectDragPreview, ConnectDragSource, DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import React, { Component } from 'react';
+import * as React from 'react';
+
+import type { PositionRecord } from '../../models/Position.js';
+import type Widget from '../../models/Widget.js';
 
 type Props = {
   widget: Widget,
+  position: PositionRecord,
   dimensions: {|
     width: number,
     height: number,
   |},
-
   connectDragSource?: ConnectDragSource,
   connectDragPreview?: ConnectDragPreview,
   isDragging?: boolean,
 };
 
 function getStyles(props: Props) {
-  const { isDragging, widget } = props;
-  const { left, top } = widget.getPosition();
+  const { isDragging, position: { top, left }} = props;
   const transform = `translate3d(${left}px, ${top}px, 0)`;
 
   return {
@@ -34,7 +35,7 @@ function getStyles(props: Props) {
   }
 }
 
-class DraggableWidget extends Component<Props> {
+class DraggableWidget extends React.Component<Props> {
   componentDidMount() {
     const { connectDragPreview } = this.props;
 
@@ -49,8 +50,12 @@ class DraggableWidget extends Component<Props> {
 
   render() {
     const { connectDragSource, dimensions, widget } = this.props;
+
+    if (!connectDragSource) {
+      return null;
+    }
     
-    return connectDragSource && connectDragSource(
+    return connectDragSource(
       <div style={getStyles(this.props)}>
         <LiveWidget
             widget={widget}

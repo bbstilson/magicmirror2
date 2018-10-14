@@ -1,10 +1,10 @@
 import moment from 'moment';
-import React, { Component } from 'react';
+import * as React from 'react';
 import Skycon from 'react-skycons';
 
 import type { Forecast } from './WeatherForecast.js';
 
-export default class ForecastDay extends Component<Forecast> {
+export default class ForecastDay extends React.Component<Forecast> {
   render() {
     const { icon, time, temperatureMin, temperatureMax } = this.props;
 
