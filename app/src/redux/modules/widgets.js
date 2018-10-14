@@ -10,6 +10,7 @@ import * as Immutable from 'immutable';
 const ADD_WIDGET = 'ADD_WIDGET';
 const REMOVE_WIDGET = 'REMOVE_WIDGET';
 const UPDATE_WIDGET_POSITION = 'UPDATE_WIDGET_POSITION';
+const UNDO_WIDGET_POSITION_CHANGES = 'UNDO_WIDGET_POSITION_CHANGES';
 const SET_POSITION_STATE = 'SET_POSITION_STATE';
 
 /**
@@ -34,6 +35,10 @@ export type UpdateWidgetPosition = {|
   position: Position,
 |};
 
+export type UndoWidgetPositionChanges = {|
+  type: 'UNDO_WIDGET_POSITION_CHANGES'
+|};
+
 export type SetPositionState = {|
   type: 'SET_POSITION_STATE',
   positions: PositionsType
@@ -43,6 +48,7 @@ type Action =
   | AddWidget
   | RemoveWidget
   | UpdateWidgetPosition
+  | UndoWidgetPositionChanges
   | SetPositionState
 ;
 
@@ -69,6 +75,12 @@ export function updateWidgetPosition (id: number, position: Position): UpdateWid
     id,
     position,
     type: UPDATE_WIDGET_POSITION,
+  };
+}
+
+export function undoWidgetPositionChanges(): UndoWidgetPositionChanges {
+  return {
+    type: UNDO_WIDGET_POSITION_CHANGES
   };
 }
 
@@ -104,7 +116,7 @@ export default (
         ...state,
         positions: state.positions.update(id, (widgetPosition) =>
           widgetPosition.update('active', () => true)
-        )
+        ),
       };
     }
     case REMOVE_WIDGET: {
@@ -123,6 +135,12 @@ export default (
         positions: state.positions.update(id, (widgetPosition) =>
           widgetPosition.update('position', () => position)
         ),
+      };
+    }
+    case UNDO_WIDGET_POSITION_CHANGES: {
+      return {
+        ...state,
+        positions: state.lastPositionSave,
       };
     }
     case SET_POSITION_STATE: {
