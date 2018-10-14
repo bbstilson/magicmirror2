@@ -6,15 +6,15 @@ import * as React from 'react';
 import './StaticWidget.css';
 
 type Props = {|
-  component: React.ComponentType<any>,
-  displayModuleBorders?: boolean,
+  component: any, // TODO: fix this... React.Node should be right type but flow is _very_ upset
+  displayWidgetBorders: boolean,
   position: WidgetPosition,
 |};
 
-const StaticWidget = ({ component: Component, position, displayModuleBorders }: Props) => {
+const StaticWidget = ({ component: Component, position, displayWidgetBorders }: Props) => {
   const classes = classnames({
     'static-widget': true,
-    'static-widget--bordered': displayModuleBorders
+    'static-widget--bordered': displayWidgetBorders
   });
   return (
     <div

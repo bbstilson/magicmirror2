@@ -1,8 +1,8 @@
-import './Calendar.css';
-
-import React, { Component } from 'react';
-import moment from 'moment';
 import classnames from 'classnames';
+import moment from 'moment';
+import * as React from 'react';
+
+import './Calendar.css';
 
 function createWeeks(now) {
   const start = now.startOf('month');
@@ -44,7 +44,7 @@ type State = {|
   now: moment
 |};
 
-export default class Calendar extends Component<Props, State> {
+export default class Calendar extends React.Component<Props, State> {
   dayInterval: IntervalID;
 
   state = {

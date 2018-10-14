@@ -1,10 +1,8 @@
 import { pluck } from '../../utils/utils.js';
-import Widget from '../../models/Widget.js';
-import WidgetDimension from '../../models/WidgetDimension.js';
+
+import * as React from 'react';
 
 import './Compliments.css';
-
-import React, { Component } from 'react';
 
 const compliments = [
   'You could open that jar of mayonnaise using only 3 fingers.',
@@ -52,12 +50,6 @@ const compliments = [
   'Hi, sexy!'
 ];
 
-export const ComplimentsWidget = new Widget({
-  name: 'Compliments',
-  description: 'Displays a random compliment 😊',
-  size: WidgetDimension({ width: 1.1, height: 15, square: false })
-});
-
 const FIVE_MINUTES = (1000 * 60 * 5);
 
 type Props = {};
@@ -65,7 +57,7 @@ type State = {|
   compliment: string
 |};
 
-export default class Compliments extends Component<Props, State> {
+export default class Compliments extends React.Component<Props, State> {
   complimentInterval: IntervalID;
 
   state = {

@@ -4,7 +4,7 @@ import './CurrentWeather.css';
 
 import axios from 'axios';
 import Loading from 'react-simple-loading';
-import React, { Component } from 'react';
+import * as React from 'react';
 import Skycon from 'react-skycons';
 
 const FIFTEEN_MINUTES = (15 * 60 * 1000);
@@ -24,7 +24,7 @@ type State = {|
   summary: string
 |};
 
-export default class CurrentWeather extends Component<Props, State> {
+export default class CurrentWeather extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
   state = DEFAULT_STATE

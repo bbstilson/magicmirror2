@@ -5,7 +5,7 @@ import './NewsFeed.css';
 import axios from 'axios';
 import Loading from 'react-simple-loading';
 import moment from 'moment';
-import React, { Component } from 'react';
+import * as React from 'react';
 
 const ONE_HOUR = (60 * 60 * 1000);
 const DEFAULT_STATE = {
@@ -27,7 +27,7 @@ type State = {|
   publishedAt: string
 |};
 
-export default class NewsFeed extends Component<Props, State> {
+export default class NewsFeed extends React.Component<Props, State> {
   newsInterval: IntervalID;
 
   static defaultProps = {

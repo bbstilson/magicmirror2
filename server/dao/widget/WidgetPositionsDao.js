@@ -5,14 +5,14 @@ function getAllWidgetPositions() {
   return WidgetPositions.findAll();
 }
 
-function updateWidgetPositions({ widgetName, top, left, active }) {
+function updateWidgetPositions({ id, top, left, active }) {
   return WidgetPositions
-    .findById(widgetName)
+    .findById(id)
     .then((widget) => widget
       ? widget.update({ top, left, active })
       : Promise.reject({
         errorCode: 1,
-        errorText: `Invalid widgetName: ${widgetName}`
+        errorText: `Invalid id: ${id}`
       })
     );
 }

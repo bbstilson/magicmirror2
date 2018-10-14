@@ -3,7 +3,7 @@ import LiveWidget from './LiveWidget.js';
 
 import { ConnectDragPreview, ConnectDragSource, DragSource } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import React, { Component } from 'react';
+import * as React from 'react';
 
 import type { PositionRecord } from '../../models/Position.js';
 import type Widget from '../../models/Widget.js';
@@ -35,7 +35,7 @@ function getStyles(props: Props) {
   }
 }
 
-class DraggableWidget extends Component<Props> {
+class DraggableWidget extends React.Component<Props> {
   componentDidMount() {
     const { connectDragPreview } = this.props;
 

@@ -1,26 +1,41 @@
 import SaveWidgetPositions from '../../components/SaveWidgetPositions.js';
 import Widget from '../../components/widget/Widget.js';
 
-import WidgetModel from '../../models/Widget.js';
+import { connect } from 'react-redux';
+import Loading from 'react-simple-loading';
+import * as React from 'react';
 
 import './WidgetPicker.css';
 
-import { connect } from 'react-redux';
-import * as Immutable from 'immutable';
-import React, { Component } from 'react';
+import type { AppState } from '../../redux/modules/index.js';
+import type { PositionsType } from '../../redux/modules/widgets.js';
 
 type Props = {|
-  available: Immutable.List<WidgetModel>,
+  positions: PositionsType,
+  isFetching: boolean,
+  fetchError: boolean,
 |};
 
-class WidgetPicker extends Component<Props> {
+class WidgetPicker extends React.Component<Props> {
   render() {
-    const { available } = this.props;
+    const { positions, isFetching, fetchError } = this.props;
+
+    if (isFetching) {
+      return <Loading color="#000" stroke="2px" />;
+    }
+
+    if (fetchError) {
+      return (
+        <div>Fetch error :/</div>
+      )
+    }
 
     return (
       <div className="widget-picker flex--column--center">
         <div className="full-width">
-          {available.map((mod) => <Widget key={mod.name} widget={mod} />)}
+          {positions
+            .valueSeq()
+            .map(({ widget }) => <Widget key={widget.id} widget={widget} />)}
           <SaveWidgetPositions />
         </div>
       </div>
@@ -28,9 +43,14 @@ class WidgetPicker extends Component<Props> {
   }
 }
 
-function mapStateToProps ({ widgets: { available }}) {
+function mapStateToProps ({
+  widgets: { positions },
+  fetchWidgets: { isFetching, fetchError }
+}: AppState) {
   return {
-    available,
+    positions,
+    isFetching,
+    fetchError,
   };
 }
 

@@ -6,16 +6,20 @@ import NewsFeed from './news_feed/NewsFeed.js';
 import Today from './today/Today.js';
 import WeatherForecast from './weather_forecast/WeatherForecast.js';
 
-import Immutable from 'immutable';
-
-// These are loaded into the database at start up. They are keyed off of their widget_name.
+// These are loaded into the database at start up. They are keyed off of their `name`.
 // See: ./server/widgets.js
-export const Widgets = Immutable.Map({
-  calendar: Calendar,
-  clock: Clock,
-  compliments: Compliments,
-  currentWeather: CurrentWeather,
-  newsFeed: NewsFeed,
-  today: Today,
-  weatherForecast: WeatherForecast,
-});
+export function getWidgetToDisplay(name: string) {
+  switch(name) {
+    case 'Calendar': return Calendar;
+    case 'Clock': return Clock;
+    case 'Compliments': return Compliments;
+    case 'Current Weather': return CurrentWeather;
+    case 'News Feed': return NewsFeed;
+    case 'Today': return Today;
+    case 'Weather Forecast': return WeatherForecast;
+    default: {
+      console.error('Attempted to render a widget that did not match:', name);
+      return null;
+    }
+  }
+}

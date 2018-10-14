@@ -3,9 +3,14 @@ const widgetPositionService = require('../../service/widget/WidgetPositionsServi
 
 const http = require('http');
 
-function isValidUpdateReq(req) {
-  console.log('validating req:', req);
-  return true;
+function isValidUpdateReq({ id, top, left, active }) {
+  return (
+    id > 0 &&
+    // These would be good to guarantee, but the DnD lib is pretty wiggly.
+    // top > 0 &&
+    // left > 0 &&
+    (active === false || active === true)
+  );
 }
 
 module.exports = function updateWidgetPositions(req, res) {

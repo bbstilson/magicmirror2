@@ -1,14 +1,14 @@
-import './Clock.css';
-
 import moment from 'moment';
-import React, { Component } from 'react';
+import * as React from 'react';
+
+import './Clock.css';
 
 type Props = {};
 type State = {|
   now: number
 |};
 
-export default class Clock extends Component<Props, State> {
+export default class Clock extends React.Component<Props, State> {
   clockInterval: IntervalID;
 
   state = {

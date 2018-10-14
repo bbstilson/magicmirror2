@@ -4,6 +4,7 @@ import Widget from './Widget.js';
 import Immutable from 'immutable';
 
 import type { PositionRecord } from './Position.js';
+import type { RawWidgetPosition } from './Widget.js';
 
 export type WidgetPositionProps = {|
   widget: Widget,
@@ -11,12 +12,20 @@ export type WidgetPositionProps = {|
   active: boolean,
 |};
 
+export type WidgetPositionRecord = Immutable.Record<WidgetPositionProps> & WidgetPositionProps;
+
 const defaultProps: WidgetPositionProps = {
   widget: Widget.empty(),
   position: Position(),
-  active: null
+  active: false
 };
 
-export type WidgetPositionRecord = Immutable.Record<WidgetPositionProps> & WidgetPositionProps;
+const WidgetPosition = Immutable.Record(defaultProps);
 
-export default Immutable.Record(defaultProps);
+WidgetPosition.fromDbRow = (row: RawWidgetPosition) => WidgetPosition({
+  widget: Widget.fromDbRow(row),
+  position: Position.fromDbRow(row),
+  active: row.active
+})
+
+export default WidgetPosition;

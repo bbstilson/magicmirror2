@@ -1,49 +1,47 @@
-import { saveWidgetPositions } from '../redux/modules/widgets.js';
+import { saveWidgetPositions } from '../redux/modules/save_widgets.js';
 
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import * as Immutable from 'immutable';
 import * as React from 'react';
 
 import './SaveWidgetPositions.css';
 
-import type { WidgetPositionRecord } from '../models/WidgetPosition.js';
+import type { AppState } from '../redux/modules/index.js';
+import type { PositionsType } from '../redux/modules/widgets.js';
 
 type Props = {|
-  saveWidgetPositions: Function,
-  active: Immutable.Map<string, WidgetPositionRecord>,
-  lastPositionSave: Immutable.Map<string, WidgetPositionRecord>,
+  saveWidgetPositions: () => Function,
+  positions: PositionsType,
+  lastPositionSave: PositionsType,
 |};
 
-class SaveWidgetPositions extends React.Component<Props> {
-  hasChangedPositions = (): boolean => {
-    const { active, lastPositionSave } = this.props;
-    // This doesn't work in flow, but works in Immutable...
-    // $FlowFixMe
-    return !active.equals(lastPositionSave);
-  }
+function hasChangedPositions({ positions, lastPositionSave }): boolean {
+  // This works in Immutable, but not in Flow. Likely a bug in Immutable flow-types.
+  // $FlowFixMe
+  return !positions.equals(lastPositionSave);
+}
 
+class SaveWidgetPositions extends React.Component<Props> {
   handleSaveClick = (): void => {
-    if (this.hasChangedPositions()) {
-      const { saveWidgetPositions, active } = this.props;
-      saveWidgetPositions(active.toIndexedSeq());
+    if (hasChangedPositions(this.props)) {
+      this.props.saveWidgetPositions();
     }
   }
 
   handleUndoClick = (): void => {
-    if (this.hasChangedPositions()) {
+    if (hasChangedPositions(this.props)) {
       console.log('undoing changes!');
       // this.props.undoWidgetPositionChanges();
     }
   }
 
   render() {
-    const hasChangedPositions = this.hasChangedPositions();
+    const updatedState = hasChangedPositions(this.props);
     const saveBtnClasses = classnames({
       'btn': true,
       'position-state-btn': true,
       'save-positions': true,
-      'save-positions__in-sync': !hasChangedPositions
+      'save-positions__in-sync': !updatedState
     });
     const undoBtnClasses = classnames({
       'btn': true,
@@ -53,9 +51,9 @@ class SaveWidgetPositions extends React.Component<Props> {
     return (
       <div className="position-state-buttons">
         <button className={saveBtnClasses} onClick={this.handleSaveClick}>
-          {hasChangedPositions ? 'Save' : 'Synced!'}
+          {updatedState ? 'Save' : 'Synced!'}
         </button>
-        {hasChangedPositions && (
+        {updatedState && (
           <button className={undoBtnClasses} onClick={this.handleUndoClick}>
             Undo
           </button>
@@ -65,9 +63,11 @@ class SaveWidgetPositions extends React.Component<Props> {
   }
 }
 
-function mapStateToProps({ widgets: { active, lastPositionSave }}) {
+function mapStateToProps({
+  widgets: { positions, lastPositionSave }
+}: AppState) {
   return {
-    active,
+    positions,
     lastPositionSave,
   };
 }

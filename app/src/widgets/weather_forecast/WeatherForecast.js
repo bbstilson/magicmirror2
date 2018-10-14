@@ -3,9 +3,9 @@ import ForecastDay from './ForecastDay.js';
 
 import './WeatherForecast.css';
 
-import React, { Component } from 'react';
-import Loading from 'react-simple-loading';
 import axios from 'axios';
+import Loading from 'react-simple-loading';
+import * as React from 'react';
 
 const FOUR_HOURS = (4 * 60 * 60 * 1000);
 const DEFAULT_STATE = {
@@ -26,7 +26,7 @@ type State = {|
 |};
 
 
-export default class WeatherForecast extends Component<Props, State> {
+export default class WeatherForecast extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
   state = DEFAULT_STATE

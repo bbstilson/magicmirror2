@@ -2,13 +2,12 @@
 
 const WidgetPositionsConfig = require('../widgetPositionsConfig.js');
 
-function widgetToRow({ widgetName, displayName, description, width, height }) {
+function widgetToRow({ name, description, width, height }) {
   return {
+    name,
     description,
     width,
     height,
-    widget_name: widgetName,
-    display_name: displayName,
     top: 0,
     left: 0,
     active: false,
