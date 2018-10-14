@@ -3,8 +3,10 @@ import StaticWidget from '../../../components/widget/StaticWidget.js';
 import { getWidgetToDisplay } from '../../../widgets/index.js';
 
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import React from 'react';
 
+import dashboardIcon from '../../../assets/dashboard.png';
 import './StaticMirror.css';
 
 import type { AppState } from '../../../redux/modules/index.js';
@@ -18,20 +20,32 @@ type Props = {|
 |};
 
 const StaticMirror = ({ width, height, positions, displayWidgetBorders }: Props) => (
-  <div className="static-mirror__container" style={{ width, height }}>
-    {positions
-      .valueSeq()
-      .map(({ widget }) => {
-        return (
-          <StaticWidget
-            key={widget.id}
-            component={getWidgetToDisplay(widget.name)}
-            position={positions.get(widget.id).position}
-            displayWidgetBorders={displayWidgetBorders}
-          />
-        );
-      })}
-  </div>
+  <React.Fragment>
+    <div className="navigation-icon__container">
+      <Link to="/dashboard">
+        <img
+          className="navigation-icon__icon"
+          src={dashboardIcon}
+          alt="Link to Dashboard."
+        />
+      </Link>
+    </div>
+    <div className="static-mirror__container" style={{ width, height }}>
+      {positions
+        .valueSeq()
+        .filter(({ active }) => active)
+        .map(({ widget }) => {
+          return (
+            <StaticWidget
+              key={widget.id}
+              component={getWidgetToDisplay(widget.name)}
+              position={positions.get(widget.id).position}
+              displayWidgetBorders={displayWidgetBorders}
+            />
+          );
+        })}
+    </div>
+  </React.Fragment>
 );
 
 function mapStateToProps({

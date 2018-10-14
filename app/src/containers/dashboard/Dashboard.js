@@ -24,13 +24,15 @@ const Dashboard = ({ toggleWidgetInfo, active, lastPositionSave }: Props) => {
           <img
             className="navigation-icon__icon"
             src={magicmirrorIcon}
-            alt="Link to MagicMirror." />
+            alt="Link to MagicMirror."
+          />
         </Link>
         <img
           className="navigation-icon__icon"
           src={infoIcon}
           alt="Display widget information."
-          onClick={toggleWidgetInfo} />
+          onClick={toggleWidgetInfo}
+        />
       </div>
       <HalfPane border>
         <WidgetPicker />
