@@ -7,11 +7,6 @@ import axios from 'axios';
 import Loading from 'react-simple-loading';
 import * as React from 'react';
 
-const FOUR_HOURS = (4 * 60 * 60 * 1000);
-const DEFAULT_STATE = {
-  loading: true,
-  data: []
-};
 
 export type Forecast = {|
   icon: string,
@@ -19,38 +14,58 @@ export type Forecast = {|
   temperatureMin: number,
   temperatureMax: number
 |};
+
 type Props = {};
+
 type State = {|
+  latitude: number,
+  longitude: number,
   loading: boolean,
   data: Array<Forecast>
 |};
 
+const FOUR_HOURS = (4 * 60 * 60 * 1000);
 
 export default class WeatherForecast extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
-  state = DEFAULT_STATE
+  state = {
+    loading: true,
+    data: [],
+    latitude: 0,
+    longitude: 0,
+  };
+
+  getCoords = (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        this.setState({ latitude, longitude }, resolve);
+      });
+    })
+  }
 
   fetchWeather = () => {
-    this.setState(DEFAULT_STATE);
+    this.setState({ loading: true }, () => {
+      const { latitude, longitude } = this.state;
 
-    // TODO: make these dynamic
-    axios.get(`${EndPoint.WEATHER_FORECAST}?lat=${37.8267}&lon=${-122.4233}`)
-      .then(({ data }) => {
-        this.setState({
-          loading: false,
-          data: data.data.map(({ icon, ...rest }) => ({
-            icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
-            ...rest
-          })),
+      axios.get(`${EndPoint.WEATHER_FORECAST}?lat=${latitude}&lon=${longitude}`)
+        .then(({ data }) => {
+          this.setState({
+            loading: false,
+            data: data.data.map(({ icon, ...rest }) => ({
+              icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
+              ...rest
+            })),
+          });
+        })
+        .catch((err) => {
+          this.setState({
+            data: [],
+            loading: false
+          });
         });
-      })
-      .catch((err) => {
-        this.setState({
-          ...DEFAULT_STATE,
-          loading: false
-        });
-      });
+    });
   }
 
   componentDidMount() {
@@ -58,7 +73,7 @@ export default class WeatherForecast extends React.Component<Props, State> {
     this.weatherInterval = setInterval(this.fetchWeather, FOUR_HOURS);
 
     // Fetch the weather forecast.
-    this.fetchWeather();
+    this.getCoords().then(this.fetchWeather);
   }
 
   componentWillUnmount() {

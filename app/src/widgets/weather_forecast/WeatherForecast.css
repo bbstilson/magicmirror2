@@ -4,5 +4,9 @@
 }
 
 .weather-forecast__data {
-  padding: 0 10px;
+  padding: 0 6px;
+}
+
+.weather-forecast__icon {
+  width: 50px;
 }

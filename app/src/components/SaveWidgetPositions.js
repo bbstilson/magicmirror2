@@ -8,13 +8,13 @@ import * as React from 'react';
 import './SaveWidgetPositions.css';
 
 import type { AppState } from '../redux/modules/index.js';
-import type { PositionsType, UpdateWidgetPositionChanges } from '../redux/modules/widgets.js';
+import type { PositionsType, UndoWidgetPositionChanges } from '../redux/modules/widgets.js';
 
 type Props = {|
   positions: PositionsType,
   lastPositionSave: PositionsType,
   saveWidgetPositions: () => Function,
-  undoWidgetPositionChanges: () => UpdateWidgetPositionChanges,
+  undoWidgetPositionChanges: () => UndoWidgetPositionChanges,
 |};
 
 function hasChangedPositions({ positions, lastPositionSave }): boolean {
