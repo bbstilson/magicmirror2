@@ -14,7 +14,7 @@ const defaultProps: PositionProps = {
   left: 0
 };
 
-const Position = Immutable.Record(defaultProps)
+const Position = Immutable.Record(defaultProps);
 
 Position.fromDbRow = (row: RawWidgetPosition) => Position({
   top: row.top,

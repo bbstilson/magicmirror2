@@ -1,4 +1,5 @@
 import { EndPoint } from '../../constants/Api.js';
+import { getCoords } from './weather_forecast_utils.js';
 
 import './CurrentWeather.css';
 
@@ -32,15 +33,6 @@ export default class CurrentWeather extends React.Component<Props, State> {
     longitude: 0,
   };
 
-  getCoords = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        this.setState({ latitude, longitude }, resolve);
-      });
-    })
-  }
-
   fetchWeather = () => {
     this.setState({ loading: true }, () => {
       const { latitude, longitude } = this.state;
@@ -50,10 +42,10 @@ export default class CurrentWeather extends React.Component<Props, State> {
           const { icon, temperature, summary } = data;
 
           this.setState({
-            icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
-            temperature,
             summary,
-            loading: false
+            temperature,
+            icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
+            loading: false,
           });
         })
         .catch((error) => {
@@ -70,7 +62,10 @@ export default class CurrentWeather extends React.Component<Props, State> {
   componentDidMount() {
     this.weatherInterval = setInterval(this.fetchWeather, FIFTEEN_MINUTES);
 
-    this.getCoords().then(this.fetchWeather);
+    getCoords()
+      .then((coords) => {
+        this.setState(coords, this.fetchWeather);
+      });
   }
 
   componentWillUnmount() {

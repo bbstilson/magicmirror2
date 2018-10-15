@@ -1,5 +1,6 @@
 import { EndPoint } from '../../constants/Api.js';
 import ForecastDay from './ForecastDay.js';
+import { getCoords } from './weather_forecast_utils.js';
 
 import './WeatherForecast.css';
 
@@ -36,15 +37,6 @@ export default class WeatherForecast extends React.Component<Props, State> {
     longitude: 0,
   };
 
-  getCoords = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        this.setState({ latitude, longitude }, resolve);
-      });
-    })
-  }
-
   fetchWeather = () => {
     this.setState({ loading: true }, () => {
       const { latitude, longitude } = this.state;
@@ -69,11 +61,12 @@ export default class WeatherForecast extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    // Set up the timer.
     this.weatherInterval = setInterval(this.fetchWeather, FOUR_HOURS);
 
-    // Fetch the weather forecast.
-    this.getCoords().then(this.fetchWeather);
+    getCoords()
+      .then((coords) => {
+        this.setState(coords, this.fetchWeather);
+      });
   }
 
   componentWillUnmount() {
