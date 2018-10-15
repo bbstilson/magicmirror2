@@ -9,52 +9,68 @@ import Skycon from 'react-skycons';
 
 const FIFTEEN_MINUTES = (15 * 60 * 1000);
 
-const DEFAULT_STATE = {
-  loading: true,
-  icon: '',
-  temperature: 0,
-  summary: 'Error'
-};
-
 type Props = {};
+
 type State = {|
   loading: boolean,
   icon: string,
   temperature: number,
-  summary: string
+  summary: string,
+  latitude: number,
+  longitude: number,
 |};
 
 export default class CurrentWeather extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
-  state = DEFAULT_STATE
+  state = {
+    loading: true,
+    icon: '',
+    temperature: 0,
+    summary: '',
+    latitude: 0,
+    longitude: 0,
+  };
+
+  getCoords = (): Promise<void> => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition((position) => {
+        const { latitude, longitude } = position.coords;
+        this.setState({ latitude, longitude }, resolve);
+      });
+    })
+  }
 
   fetchWeather = () => {
-    this.setState(DEFAULT_STATE);
+    this.setState({ loading: true }, () => {
+      const { latitude, longitude } = this.state;
 
-    // TODO: make these lat and long dynamic.
-    axios.get(`${EndPoint.CURRENT_WEATHER}?lat=${37.8267}&lon=${-122.4233}`)
-      .then(({ data }) => {
-        const { icon, temperature, summary } = data;
+      axios.get(`${EndPoint.CURRENT_WEATHER}?lat=${latitude}&lon=${longitude}`)
+        .then(({ data }) => {
+          const { icon, temperature, summary } = data;
 
-        this.setState({
-          icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
-          temperature,
-          summary,
-          loading: false
+          this.setState({
+            icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
+            temperature,
+            summary,
+            loading: false
+          });
+        })
+        .catch((error) => {
+          console.error(error)
+          this.setState({
+            loading: false,
+            summary: 'ERROR'
+          });
         });
-      })
-      .catch((err) => {
-        this.setState({
-          ...DEFAULT_STATE,
-          loading: false
-        });
-      });
+    });
+
   }
 
   componentDidMount() {
     this.weatherInterval = setInterval(this.fetchWeather, FIFTEEN_MINUTES);
-    this.fetchWeather();
+
+    this.getCoords().then(this.fetchWeather);
   }
 
   componentWillUnmount() {

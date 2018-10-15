@@ -40,8 +40,6 @@ export default class WeatherForecast extends React.Component<Props, State> {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
-        console.log('got coords: ', position.coords);
-
         this.setState({ latitude, longitude }, resolve);
       });
     })
