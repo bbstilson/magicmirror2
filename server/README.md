@@ -19,3 +19,10 @@ _This step is optional, but useful for testing endpoints._
 ### Step 2: Start Server
 
 `yarn start:dev`
+
+
+## Accessing DB
+
+```
+sqlite3 -header -column db/storage/dev_magicmirror_db.sqlite
+```
