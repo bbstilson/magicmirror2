@@ -1,12 +1,14 @@
 import { EndPoint } from '../../constants/Api.js';
 import ForecastDay from './ForecastDay.js';
-import { getCoords } from './weather_forecast_utils.js';
 
 import './WeatherForecast.css';
 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import Loading from 'react-simple-loading';
 import * as React from 'react';
+
+import type { AppState } from '../../redux/modules/index.js';
 
 export type Forecast = {|
   icon: string,
@@ -15,30 +17,31 @@ export type Forecast = {|
   temperatureMax: number
 |};
 
-type Props = {};
-
-type State = {|
+type Props = {
   latitude: number,
   longitude: number,
+  error: boolean,
+  isFetching: boolean,
+};
+
+type State = {|
   loading: boolean,
   data: Array<Forecast>
 |};
 
 const FOUR_HOURS = (4 * 60 * 60 * 1000);
 
-export default class WeatherForecast extends React.Component<Props, State> {
+class WeatherForecast extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
   state = {
     loading: true,
     data: [],
-    latitude: 0,
-    longitude: 0,
   };
 
   fetchWeather = () => {
     this.setState({ loading: true }, () => {
-      const { latitude, longitude } = this.state;
+      const { latitude, longitude } = this.props;
 
       axios.get(`${EndPoint.WEATHER_FORECAST}?lat=${latitude}&lon=${longitude}`)
         .then(({ data }) => {
@@ -62,14 +65,20 @@ export default class WeatherForecast extends React.Component<Props, State> {
   componentDidMount() {
     this.weatherInterval = setInterval(this.fetchWeather, FOUR_HOURS);
 
-    getCoords()
-      .then((coords) => {
-        this.setState(coords, this.fetchWeather);
-      });
+    if (!this.props.isFetching) {
+      this.fetchWeather();
+    }
   }
 
   componentWillUnmount() {
     clearInterval(this.weatherInterval);
+  }
+
+  componentWillReceiveProps({ isFetching }: Props) {
+    // Coordinates have been fetched.
+    if (this.props.isFetching && !isFetching) {
+      this.fetchWeather();
+    }
   }
 
   render() {
@@ -90,3 +99,16 @@ export default class WeatherForecast extends React.Component<Props, State> {
     );
   }
 }
+
+function mapStateToProps({
+  weather: { latitude, longitude, isFetching, error }
+}: AppState) {
+  return {
+    isFetching,
+    error,
+    latitude,
+    longitude,
+  };
+}
+
+export default connect(mapStateToProps)(WeatherForecast);

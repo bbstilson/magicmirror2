@@ -11,7 +11,9 @@ export default class ForecastHour extends React.Component<ForecastHourType> {
     return (
       <tr>
         <td className="hourly-forecast__data hour">{moment.unix(time).format('h A')}</td>
-        <Skycon className="hourly-forecast__data hourly-forecast__icon" icon={icon} color="white" />
+        <td className="hourly-forecast__data hourly-forecast__icon">
+          <Skycon icon={icon} color="white" />
+        </td>
         <td className="hourly-forecast__data">{parseInt(precipProbability, 10)}%</td>
         <td className="hourly-forecast__data">{parseInt(temperature, 10)}°</td>
       </tr>

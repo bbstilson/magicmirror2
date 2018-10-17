@@ -1,15 +1,20 @@
 import { fetchWidgetPositions } from './redux/modules/fetch_widgets.js';
+import { getCoordinates } from './redux/modules/weather.js';
 
 import { connect } from 'react-redux';
 import * as React from 'react';
 
 type Props = {|
-  fetchWidgetPositions: Function
+  fetchWidgetPositions: () => Function,
+  getCoordinates: () => Function,
 |};
 
 class InitializeApp extends React.Component<Props> {
   componentWillMount = () => {
-    this.props.fetchWidgetPositions();
+    const { fetchWidgetPositions, getCoordinates } = this.props;
+
+    fetchWidgetPositions();
+    getCoordinates();
   }
   
   render() {
@@ -17,4 +22,9 @@ class InitializeApp extends React.Component<Props> {
   }
 }
 
- export default connect(() => ({}), { fetchWidgetPositions })(InitializeApp);
+const mapDispatchToProps = {
+  fetchWidgetPositions,
+  getCoordinates,
+};
+
+ export default connect(() => ({}), mapDispatchToProps)(InitializeApp);
