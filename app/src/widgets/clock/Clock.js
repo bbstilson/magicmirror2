@@ -5,22 +5,25 @@ import './Clock.css';
 
 type Props = {};
 type State = {|
-  now: number
+  now: string
 |};
+
+const MOMENT_FORMAT = 'h:mm A';
+const ONE_SECOND = 1000;
 
 export default class Clock extends React.Component<Props, State> {
   clockInterval: IntervalID;
 
   state = {
-    now: Date.now()
-  }
+    now: moment(Date.now()).format(MOMENT_FORMAT)
+  };
 
   componentDidMount() {
     this.clockInterval = setInterval(() => {
       this.setState({
-        now: Date.now()
+        now: moment(Date.now()).format(MOMENT_FORMAT)
       });
-    }, 1000);
+    }, ONE_SECOND);
   }
 
   componentWillUnmount() {
@@ -30,7 +33,7 @@ export default class Clock extends React.Component<Props, State> {
   render() {
     return (
       <p className="clock-widget">
-        {moment(this.state.now).format('h:mm:ss A')}
+        {this.state.now}
       </p>
     );
   }
