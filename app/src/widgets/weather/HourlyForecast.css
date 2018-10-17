@@ -1,0 +1,16 @@
+.hour {
+  text-align: right;
+}
+
+.hourly-forecast {
+/*  font-weight: 300;
+  text-align: left;*/
+}
+
+.hourly-forecast__data:not(.hourly-forecast__icon) {
+  padding: 0 6px;
+}
+
+.hourly-forecast__icon {
+  width: 50px;
+}

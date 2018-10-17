@@ -3,7 +3,7 @@
   text-align: left;
 }
 
-.weather-forecast__data {
+.weather-forecast__data:not(.hourly-forecast__icon) {
   padding: 0 6px;
 }
 

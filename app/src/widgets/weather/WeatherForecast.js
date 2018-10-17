@@ -8,7 +8,6 @@ import axios from 'axios';
 import Loading from 'react-simple-loading';
 import * as React from 'react';
 
-
 export type Forecast = {|
   icon: string,
   time: number,
@@ -76,21 +75,18 @@ export default class WeatherForecast extends React.Component<Props, State> {
   render() {
     const { loading, data } = this.state;
 
+    if (loading) {
+      return <Loading color='#fff' stroke='2px' />;
+    }
+
     return (
-      <div>
-        {loading
-          ? <Loading color="#fff" stroke="2px" />
-          : (
-            <table className="weather-forecast">
-              <tbody>
-                {data.map((forecast) => 
-                  <ForecastDay key={forecast.time} {...forecast} />
-                )}
-              </tbody>
-            </table>
-          )
-        }
-      </div>
+      <table className="weather-forecast">
+        <tbody>
+          {data.map((forecast) => 
+            <ForecastDay key={forecast.time} {...forecast} />
+          )}
+        </tbody>
+      </table>
     );
   }
 }

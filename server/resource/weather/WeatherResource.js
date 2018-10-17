@@ -17,12 +17,18 @@ module.exports = function WeatherResource(router) {
       .then(checkStatus)
       .then(({ data }) => {
         switch(request.params.window) {
-          case ForecastType.CURRENT:
+          case ForecastType.CURRENT: {
             response.json(data.currently);
             break;
-          case ForecastType.FORECAST:
+          }
+          case ForecastType.FORECAST: {
             response.json(data.daily);
             break;
+          }
+          case ForecastType.HOURLY: {
+            response.json(data.hourly);
+            break;
+          }
           default:
             response.json({
               status: 500,

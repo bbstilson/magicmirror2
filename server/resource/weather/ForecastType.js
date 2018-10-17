@@ -1,6 +1,7 @@
 const ForecastType = {
   CURRENT: 'current',
-  FORECAST: 'forecast'
+  FORECAST: 'forecast',
+  HOURLY: 'hourly',
 };
 
 module.exports = ForecastType;
