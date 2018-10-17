@@ -3,24 +3,30 @@ import { EndPoint } from '../../constants/Api.js';
 import './CurrentWeather.css';
 
 import axios from 'axios';
+import { connect } from 'react-redux';
 import Loading from 'react-simple-loading';
 import * as React from 'react';
 import Skycon from 'react-skycons';
 
+import type { AppState } from '../../redux/modules/index.js';
+
 const FIFTEEN_MINUTES = (15 * 60 * 1000);
 
-type Props = {};
+type Props = {
+  latitude: number,
+  longitude: number,
+  error: boolean,
+  isFetching: boolean,
+};
 
 type State = {|
   loading: boolean,
   icon: string,
   temperature: number,
   summary: string,
-  latitude: number,
-  longitude: number,
 |};
 
-export default class CurrentWeather extends React.Component<Props, State> {
+class CurrentWeather extends React.Component<Props, State> {
   weatherInterval: IntervalID;
 
   state = {
@@ -28,32 +34,21 @@ export default class CurrentWeather extends React.Component<Props, State> {
     icon: '',
     temperature: 0,
     summary: '',
-    latitude: 0,
-    longitude: 0,
   };
-
-  getCoords = (): Promise<void> => {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        this.setState({ latitude, longitude }, resolve);
-      });
-    })
-  }
 
   fetchWeather = () => {
     this.setState({ loading: true }, () => {
-      const { latitude, longitude } = this.state;
+      const { latitude, longitude } = this.props;
 
       axios.get(`${EndPoint.CURRENT_WEATHER}?lat=${latitude}&lon=${longitude}`)
         .then(({ data }) => {
           const { icon, temperature, summary } = data;
 
           this.setState({
-            icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
-            temperature,
             summary,
-            loading: false
+            temperature,
+            icon: icon.replace(/-/g, '_').toUpperCase(), // format icons for Skycons
+            loading: false,
           });
         })
         .catch((error) => {
@@ -70,11 +65,20 @@ export default class CurrentWeather extends React.Component<Props, State> {
   componentDidMount() {
     this.weatherInterval = setInterval(this.fetchWeather, FIFTEEN_MINUTES);
 
-    this.getCoords().then(this.fetchWeather);
+    if (!this.props.isFetching) {
+      this.fetchWeather();
+    }
   }
 
   componentWillUnmount() {
     clearInterval(this.weatherInterval);
+  }
+
+  componentWillReceiveProps({ isFetching }: Props) {
+    // Coordinates have been fetched.
+    if (this.props.isFetching && !isFetching) {
+      this.fetchWeather();
+    }
   }
 
   render() {
@@ -101,3 +105,16 @@ export default class CurrentWeather extends React.Component<Props, State> {
     );
   }
 }
+
+function mapStateToProps({
+  weather: { latitude, longitude, isFetching, error }
+}: AppState) {
+  return {
+    isFetching,
+    error,
+    latitude,
+    longitude,
+  };
+}
+
+export default connect(mapStateToProps)(CurrentWeather);

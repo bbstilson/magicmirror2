@@ -4,5 +4,6 @@ export const EndPoint = {
   NEWS: `${ROOT}/news`,
   CURRENT_WEATHER: `${ROOT}/weather/current`,
   WEATHER_FORECAST: `${ROOT}/weather/forecast`,
-  WIDGETS: `${ROOT}/widgets`
+  HOURLY_FORECAST: `${ROOT}/weather/hourly`,
+  WIDGETS: `${ROOT}/widgets`,
 };
