@@ -1,8 +1,11 @@
 build:
-	docker build -t api-server .	
+	docker build -t api-server .
 
 stop:
 	docker stop api-server
+
+remove:
+	docker rmi api-server
 
 prune:
 	docker image prune -f
@@ -14,6 +17,6 @@ run:
 	-e WEATHER_API_KEY=ca6a5cfecf5142839769c75e4d72bbe2 \
 	api-server
 
-start: build run
+start: remove build run
 
 restart: stop prune build run

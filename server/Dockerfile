@@ -1,6 +1,6 @@
 FROM node:10.9-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /src
 
 COPY package.json yarn.lock ./
 
@@ -12,4 +12,4 @@ RUN npm install -g -s --no-progress yarn && \
 
 CMD [ "yarn", "start" ]
 
-EXPOSE 8080
+EXPOSE 4000

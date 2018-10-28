@@ -26,3 +26,4 @@ _This step is optional, but useful for testing endpoints._
 ```
 sqlite3 -header -column db/storage/dev_magicmirror_db.sqlite
 ```
+
