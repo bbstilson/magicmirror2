@@ -1,0 +1,19 @@
+version: '3'
+services:
+  web-app:
+    container_name: web-app
+    build:
+      context: ./app
+    depends_on:
+      - api-server
+    ports:
+    - "3000:3000"
+  api-server:
+    container_name: api-server
+    build:
+      context: ./server
+      args:
+        - NEWS_API_KEY
+        - WEATHER_API_KEY
+    ports:
+    - "4000:4000"
